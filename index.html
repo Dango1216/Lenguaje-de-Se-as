@@ -4,823 +4,854 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Habla en Señas</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg:#0a0a0f; --surface:#13131a; --card:#1a1a24;
-  --accent:#00e5ff; --accent2:#7c3aed; --accent3:#f59e0b;
-  --text:#e8e8f0; --muted:#5a5a7a;
-  --card-size:100px; --font-size-base:1rem; --sign-emoji-size:3.2rem;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080f;--surface:#0f1018;--card:#161820;--border:rgba(255,255,255,0.07);
+  --accent:#c8f0ff;--accent2:#7ee8fa;--accent3:#eec0fd;--gold:#f9e784;
+  --text:#eef0f8;--muted:#4a4d66;--green:#6effc0;
+  --card-size:130px;--font-base:1rem;--emoji-size:3.8rem;
 }
-body {
-  background:var(--bg); color:var(--text);
-  font-family:'Syne',sans-serif; min-height:100vh;
-  display:flex; flex-direction:column; align-items:center;
-  overflow-x:hidden; font-size:var(--font-size-base);
-  transition:background .4s,color .4s;
-}
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);
-  background-size:40px 40px; pointer-events:none; z-index:0;
-}
-body.light { --bg:#f0f4ff; --surface:#e4eaf8; --card:#dce4f5; --text:#1a1a2e; --muted:#7a7aaa; }
-body.light::before { background-image:linear-gradient(rgba(124,58,237,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.05) 1px,transparent 1px); }
+body{background:var(--bg);color:var(--text);font-family:'Fraunces',Georgia,serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;transition:background .4s,color .4s}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(126,232,250,.07),transparent),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(200,100,255,.06),transparent);pointer-events:none;z-index:0}
 
-.blob { position:fixed; border-radius:50%; filter:blur(80px); opacity:.15; pointer-events:none; z-index:0; }
-.blob1 { width:400px;height:400px;background:var(--accent2);top:-100px;left:-100px; }
-.blob2 { width:300px;height:300px;background:var(--accent);bottom:-80px;right:-80px; }
+body.light{--bg:#f5f7ff;--surface:#edf0fa;--card:#e4e8f5;--border:rgba(0,0,0,.08);--text:#0d0f1a;--muted:#8890b0}
+body.light::before{background:radial-gradient(ellipse 80% 60% at 20% 0%,rgba(100,180,255,.08),transparent),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(180,100,255,.06),transparent)}
 
-.topbar { position:relative;z-index:10;width:100%;max-width:900px;display:flex;justify-content:flex-end;padding:20px 24px 0;gap:10px; }
-.icon-btn { width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid rgba(255,255,255,.08);color:var(--text);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s; }
-.icon-btn:hover { background:var(--surface);transform:scale(1.08); }
-body.light .icon-btn { border-color:rgba(0,0,0,.1); }
+/* TOPBAR */
+.topbar{position:relative;z-index:10;width:100%;max-width:940px;display:flex;justify-content:flex-end;padding:18px 24px 0;gap:10px}
+.icon-btn{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'DM Mono',monospace}
+.icon-btn:hover{background:var(--surface);transform:scale(1.1)}
 
-header { position:relative;z-index:1;text-align:center;padding:16px 24px 14px; }
-.logo-badge { display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:100px;padding:6px 16px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px; }
-h1 { font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;line-height:1.05;background:linear-gradient(135deg,#fff 0%,var(--accent) 60%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px; }
-body.light h1 { background:linear-gradient(135deg,#1a1a2e 0%,var(--accent2) 60%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text; }
-.subtitle { color:var(--muted);font-size:.9rem;max-width:420px;margin:0 auto;line-height:1.6; }
+/* HEADER */
+header{position:relative;z-index:1;text-align:center;padding:24px 24px 10px}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);border:1px solid rgba(126,232,250,.25);border-radius:100px;padding:5px 16px;margin-bottom:20px}
+h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:900;line-height:1;letter-spacing:-.02em;margin-bottom:10px;background:linear-gradient(135deg,var(--text) 0%,var(--accent2) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+body.light h1{background:linear-gradient(135deg,#0d0f1a 0%,#1a6ea8 50%,#7c3aed 100%);-webkit-background-clip:text;background-clip:text}
+.subtitle{color:var(--muted);font-size:.95rem;font-style:italic;font-weight:400;max-width:400px;margin:0 auto}
 
-.main-container { position:relative;z-index:1;width:100%;max-width:900px;padding:0 24px 60px;display:flex;flex-direction:column;align-items:center;gap:20px; }
+/* MAIN */
+.main{position:relative;z-index:1;width:100%;max-width:940px;padding:0 20px 80px;display:flex;flex-direction:column;align-items:center;gap:18px}
 
-/* Stats bar */
-.stats-bar { display:flex;gap:16px;flex-wrap:wrap;justify-content:center; }
-.stat-chip { background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:100px;padding:6px 14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px; }
-.stat-chip strong { color:var(--accent); }
-body.light .stat-chip { border-color:rgba(0,0,0,.08); }
+/* STATS */
+.stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.stat{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:100px;padding:5px 14px;display:flex;align-items:center;gap:6px}
+.stat b{color:var(--accent2)}
 
-.mic-section { display:flex;flex-direction:column;align-items:center;gap:12px; }
-.mic-btn { width:var(--card-size);height:var(--card-size);border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s; }
-.mic-btn:hover { transform:scale(1.06); }
-.mic-btn.listening { animation:pulse-mic 1.5s ease-in-out infinite;box-shadow:0 0 40px rgba(0,229,255,.5); }
-@keyframes pulse-mic { 0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.5);}50%{box-shadow:0 0 0 22px rgba(0,229,255,0);} }
-.mic-icon { font-size:2rem; }
-.mic-label { font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted); }
-.status-dot { display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted);margin-right:8px;vertical-align:middle; }
-.status-dot.active { background:#22c55e;box-shadow:0 0 8px #22c55e;animation:blink 1s ease-in-out infinite; }
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+/* MIC */
+.mic-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.mic-btn{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#1a1a3e,#0d2040);border:2px solid var(--accent2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;position:relative;overflow:hidden}
+.mic-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(126,232,250,.15),rgba(200,100,255,.1));opacity:0;transition:opacity .3s}
+.mic-btn:hover::before,.mic-btn.on::before{opacity:1}
+.mic-btn.on{border-color:var(--green);box-shadow:0 0 0 0 rgba(110,255,192,.4);animation:ring 1.4s ease infinite}
+@keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(110,255,192,.4)}60%{box-shadow:0 0 0 18px rgba(110,255,192,0)}}
+.mic-ico{font-size:1.9rem;transition:transform .2s}
+.mic-btn.on .mic-ico{transform:scale(1.1)}
+.mic-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.dot.on{background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-.mode-toggle { display:flex;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:4px; }
-body.light .mode-toggle { border-color:rgba(0,0,0,.1); }
-.mode-btn { background:transparent;border:none;border-radius:100px;padding:8px 18px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s; }
-.mode-btn.active { background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff; }
+/* MODE */
+.mode-row{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:3px}
+.mode-btn{background:transparent;border:none;border-radius:100px;padding:7px 18px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.mode-btn.on{background:var(--card);color:var(--accent2);border:1px solid var(--border)}
 
-.transcript-box { width:100%;background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:16px 20px;min-height:60px;display:flex;align-items:center;gap:12px; }
-body.light .transcript-box { border-color:rgba(0,0,0,.08); }
-.transcript-tag { font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;border-right:1px solid rgba(0,229,255,.2);padding-right:14px;align-self:flex-start;padding-top:2px; }
-#transcript-text { font-size:1.05rem;color:var(--text);flex:1;line-height:1.5;min-height:22px; }
-#transcript-text.placeholder { color:var(--muted);font-style:italic; }
+/* TRANSCRIPT */
+.tx-box{width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 20px;min-height:54px;display:flex;align-items:center;gap:14px}
+.tx-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);white-space:nowrap;border-right:1px solid rgba(126,232,250,.2);padding-right:14px;align-self:flex-start;padding-top:3px}
+#tx{font-size:1rem;line-height:1.5;flex:1;font-style:italic;min-height:20px}
+#tx.ph{color:var(--muted)}
 
-.signs-panel { width:100%;background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:22px;min-height:260px;display:flex;flex-direction:column;gap:16px; }
-body.light .signs-panel { border-color:rgba(0,0,0,.08); }
-.panel-title { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px; }
-.panel-title::after { content:'';flex:1;height:1px;background:rgba(0,229,255,.15); }
-.panel-subtitle { font-size:11px;color:var(--muted);font-family:'Space Mono',monospace; }
+/* SIGNS PANEL */
+.panel{width:100%;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;min-height:260px;display:flex;flex-direction:column;gap:14px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.panel-ttl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);display:flex;align-items:center;gap:8px}
+.panel-ttl::after{content:'';width:60px;height:1px;background:rgba(126,232,250,.15)}
+.panel-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
 
-.signs-display { display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-start;flex:1;min-height:160px; }
+.signs-grid{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:flex-start;flex:1;min-height:160px}
 
-.sign-card { display:flex;flex-direction:column;align-items:center;gap:6px;animation:sign-appear .4s cubic-bezier(.34,1.56,.64,1) both; }
-@keyframes sign-appear { from{opacity:0;transform:translateY(16px) scale(.8);}to{opacity:1;transform:translateY(0) scale(1);} }
-.sign-card.letter-card .sign-hand { border-color:rgba(245,158,11,.4); }
-.sign-card.letter-card .sign-hand.active { border-color:var(--accent3);box-shadow:0 0 14px rgba(245,158,11,.2); }
+/* SIGN CARD */
+.sign-card{display:flex;flex-direction:column;align-items:center;gap:8px;animation:pop .45s cubic-bezier(.34,1.6,.64,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.75)}to{opacity:1;transform:none}}
 
-.sign-hand { width:var(--card-size);height:var(--card-size);background:var(--surface);border:2px solid rgba(0,229,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;transition:border-color .3s;overflow:hidden; }
-.sign-hand.active { border-color:var(--accent);box-shadow:0 0 18px rgba(0,229,255,.18);animation:active-card .4s ease; }
-@keyframes active-card{0%{transform:scale(1.08);}100%{transform:scale(1);}}
-.sign-hand span { font-size:var(--sign-emoji-size); }
+.hand-box{width:var(--card-size);height:var(--card-size);background:var(--surface);border:1.5px solid rgba(126,232,250,.2);border-radius:18px;display:flex;align-items:center;justify-content:center;transition:border-color .3s,box-shadow .3s;overflow:hidden;padding:8px}
+.hand-box.lit{border-color:var(--accent2);box-shadow:0 0 24px rgba(126,232,250,.15)}
+.hand-box svg{width:100%;height:100%}
 
-.sign-label { font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;text-align:center;max-width:100px; }
-.sign-detail { font-size:10px;color:var(--muted);text-align:center;max-width:96px;line-height:1.3; }
-.sign-cat { font-size:9px;color:var(--accent2);font-family:'Space Mono',monospace;letter-spacing:.5px;text-transform:uppercase;margin-top:1px; }
+.sign-word-lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;color:var(--accent2);text-align:center;max-width:120px;text-transform:uppercase}
+.sign-detail{font-size:10px;color:var(--muted);text-align:center;max-width:110px;line-height:1.4;font-style:italic;font-family:'Fraunces',serif}
+.sign-cat-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--accent3);letter-spacing:1px;text-transform:uppercase}
+
+/* letter card style */
+.sign-card.ltr .hand-box{border-color:rgba(249,231,132,.25)}
+.sign-card.ltr .hand-box.lit{border-color:var(--gold);box-shadow:0 0 18px rgba(249,231,132,.12)}
+.sign-card.ltr .sign-word-lbl{color:var(--gold)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:7px;width:100%}
+.chip{font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s}
+.chip.found{border-color:rgba(126,232,250,.3);color:var(--accent2);background:rgba(126,232,250,.06)}
+.chip.miss{border-color:rgba(249,231,132,.3);color:var(--gold);background:rgba(249,231,132,.05)}
 
 /* fallback banner */
-.fallback-banner { background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--accent3);display:flex;align-items:center;gap:8px; }
+.fb-banner{width:100%;background:rgba(249,231,132,.06);border:1px solid rgba(249,231,132,.2);border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);display:flex;align-items:center;gap:8px}
 
-.empty-state { display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);flex:1;justify-content:center; }
-.empty-state .big-icon { font-size:3rem;opacity:.35; }
-.empty-state p { font-size:.9rem;text-align:center;line-height:1.5; }
+/* empty */
+.empty{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);flex:1;justify-content:center;padding:20px}
+.empty .ico{font-size:2.8rem;opacity:.3}
+.empty p{font-size:.9rem;text-align:center;line-height:1.6;font-style:italic}
 
-.word-chips { display:flex;flex-wrap:wrap;gap:7px;width:100%; }
-.word-chip { background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);border-radius:100px;padding:4px 12px;font-size:12px;font-family:'Space Mono',monospace;color:var(--text);transition:all .2s; }
-.word-chip.found { background:rgba(0,229,255,.15);border-color:var(--accent);color:var(--accent); }
-.word-chip.missing { background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:var(--accent3); }
-
-.support-note { background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:12px 18px;font-size:12px;color:var(--accent3);line-height:1.5;text-align:center;max-width:700px;width:100%; }
-.no-support { background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:12px;padding:14px;color:#f87171;font-size:13px;text-align:center;line-height:1.5;display:none; }
+.note{background:rgba(249,231,132,.06);border:1px solid rgba(249,231,132,.18);border-radius:12px;padding:11px 18px;font-size:12px;color:var(--gold);line-height:1.5;text-align:center;max-width:700px;width:100%;font-style:italic}
+.no-sup{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px;color:#f87171;font-size:13px;text-align:center;display:none}
 
 /* ── SETTINGS ── */
-.settings-overlay { position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s; }
-.settings-overlay.open { opacity:1;pointer-events:all; }
-.settings-drawer { width:100%;max-width:600px;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:24px 24px 0 0;padding:26px 26px 48px;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1,.64,1);max-height:90vh;overflow-y:auto; }
-.settings-overlay.open .settings-drawer { transform:translateY(0); }
-body.light .settings-drawer { border-color:rgba(0,0,0,.1); }
-.drawer-handle { width:40px;height:4px;background:var(--muted);border-radius:2px;margin:0 auto 20px;opacity:.4; }
-.drawer-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:24px; }
-.drawer-header h2 { font-size:1.2rem;font-weight:800; }
-.drawer-close { background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;transition:color .2s;line-height:1; }
-.drawer-close:hover { color:var(--text); }
-.settings-section { margin-bottom:24px; }
-.settings-label { font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px; }
-.settings-label::after { content:'';flex:1;height:1px;background:rgba(0,229,255,.12); }
-.settings-row { display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);gap:14px; }
-body.light .settings-row { border-bottom-color:rgba(0,0,0,.06); }
-.settings-row:last-child { border-bottom:none; }
-.row-info { flex:1; }
-.row-title { font-size:.9rem;font-weight:700;margin-bottom:2px; }
-.row-desc { font-size:.75rem;color:var(--muted);line-height:1.4; }
-.toggle-wrap { position:relative;flex-shrink:0; }
-.toggle-input { position:absolute;opacity:0;width:0;height:0; }
-.toggle-track { display:block;width:48px;height:27px;background:var(--muted);border-radius:100px;cursor:pointer;transition:background .2s;position:relative; }
-.toggle-input:checked + .toggle-track { background:var(--accent); }
-.toggle-track::after { content:'';position:absolute;top:3px;left:3px;width:21px;height:21px;background:#fff;border-radius:50%;transition:transform .2s; }
-.toggle-input:checked + .toggle-track::after { transform:translateX(21px); }
-.slider-wrap { display:flex;align-items:center;gap:10px;min-width:160px; }
-.slider-val { font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);min-width:36px;text-align:right; }
-input[type=range] { -webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--muted);border-radius:2px;outline:none;cursor:pointer;flex:1; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));cursor:pointer; }
-.color-row { display:flex;gap:8px;flex-wrap:wrap; }
-.color-swatch { width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s; }
-.color-swatch.selected { border-color:var(--text);transform:scale(1.18); }
-.lang-select { background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);border-radius:8px;padding:7px 11px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;outline:none;min-width:140px; }
-body.light .lang-select { border-color:rgba(0,0,0,.12); }
-.reset-btn { width:100%;padding:12px;margin-top:4px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s; }
-.reset-btn:hover { background:rgba(239,68,68,.2); }
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.open{opacity:1;pointer-events:all}
+.drawer{width:100%;max-width:580px;background:var(--surface);border:1px solid var(--border);border-radius:22px 22px 0 0;padding:24px 24px 52px;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1,.64,1);max-height:88vh;overflow-y:auto}
+.ov.open .drawer{transform:translateY(0)}
+.dh{width:36px;height:4px;background:var(--muted);border-radius:2px;margin:0 auto 18px;opacity:.3}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.dhead h2{font-size:1.1rem;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:1px}
+.dcl{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;transition:color .2s;line-height:1}
+.dcl:hover{color:var(--text)}
+.dsec{margin-bottom:22px}
+.dlbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.dlbl::after{content:'';flex:1;height:1px;background:rgba(126,232,250,.1)}
+.drow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);gap:12px}
+.drow:last-child{border-bottom:none}
+.dr-info .rt{font-size:.88rem;font-weight:700;margin-bottom:2px;font-family:'DM Mono',monospace;letter-spacing:.5px}
+.dr-info .rd{font-size:.74rem;color:var(--muted);line-height:1.4;font-style:italic}
+.tw{position:relative;flex-shrink:0}
+.ti{position:absolute;opacity:0;width:0;height:0}
+.tt{display:block;width:46px;height:26px;background:var(--muted);border-radius:100px;cursor:pointer;transition:background .2s;position:relative}
+.ti:checked+.tt{background:var(--accent2)}
+.tt::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .2s}
+.ti:checked+.tt::after{transform:translateX(20px)}
+.sw{display:flex;align-items:center;gap:8px;min-width:155px}
+.sv{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);min-width:34px;text-align:right}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--muted);border-radius:2px;outline:none;cursor:pointer;flex:1}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent2);cursor:pointer}
+.cr{display:flex;gap:7px;flex-wrap:wrap}
+.cs{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s}
+.cs.on{border-color:var(--text);transform:scale(1.2)}
+.ls{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 10px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;outline:none;min-width:138px}
+.rb{width:100%;padding:11px;margin-top:4px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:9px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.rb:hover{background:rgba(239,68,68,.18)}
 </style>
 </head>
 <body>
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-
 <div class="topbar">
   <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Tema">🌙</button>
-  <button class="icon-btn" onclick="openSettings()" title="Ajustes">⚙️</button>
+  <button class="icon-btn" onclick="openS()" title="Ajustes">⚙️</button>
 </div>
 
 <header>
-  <div class="logo-badge">🤟 Habla en Señas</div>
-  <h1>Voz en Lenguaje<br>de Señas</h1>
-  <p class="subtitle">Habla y tus palabras se convierten en señas al instante</p>
+  <div class="badge">🤟 Lengua de Señas</div>
+  <h1>Habla en Señas</h1>
+  <p class="subtitle">Tu voz, convertida en señas ilustradas</p>
 </header>
 
-<div class="main-container">
-  <div class="no-support" id="no-support">⚠️ Usa Google Chrome o Edge para el reconocimiento de voz.</div>
+<div class="main">
+  <div class="no-sup" id="no-sup">⚠️ Usa Google Chrome o Edge para el reconocimiento de voz.</div>
 
-  <div class="stats-bar">
-    <div class="stat-chip">🤟 <strong id="word-count">0</strong> palabras</div>
-    <div class="stat-chip">💼 Trabajo · 🏠 Hogar · 🎓 Educación</div>
+  <div class="stats">
+    <div class="stat">Señas registradas <b id="wcount">0</b></div>
+    <div class="stat">💼 Trabajo · 🏠 Hogar · 🎓 Educación</div>
   </div>
 
-  <div class="mode-toggle">
-    <button class="mode-btn active" id="btn-palabras" onclick="setMode('palabras')">Por Palabras</button>
-    <button class="mode-btn" id="btn-letras" onclick="setMode('letras')">Dactilológico</button>
+  <div class="mode-row">
+    <button class="mode-btn on" id="btn-p" onclick="setMode('p')">Por palabras</button>
+    <button class="mode-btn" id="btn-l" onclick="setMode('l')">Dactilológico</button>
   </div>
 
-  <div class="mic-section">
+  <div class="mic-wrap">
     <button class="mic-btn" id="mic-btn" onclick="toggleMic()">
-      <span class="mic-icon" id="mic-icon">🎙️</span>
+      <span class="mic-ico" id="mic-ico">🎙️</span>
     </button>
-    <span class="mic-label">
-      <span class="status-dot" id="status-dot"></span>
-      <span id="mic-status">Toca para hablar</span>
-    </span>
+    <span class="mic-lbl"><span class="dot" id="dot"></span><span id="mic-st">Toca para hablar</span></span>
   </div>
 
-  <div class="transcript-box">
-    <span class="transcript-tag">Texto</span>
-    <div id="transcript-text" class="placeholder">Lo que digas aparecerá aquí...</div>
+  <div class="tx-box">
+    <span class="tx-tag">Texto</span>
+    <div id="tx" class="ph">Lo que digas aparecerá aquí...</div>
   </div>
 
-  <div class="signs-panel">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-      <div class="panel-title" style="flex:1;margin-bottom:0;">Señas detectadas</div>
-      <div class="panel-subtitle" id="panel-subtitle"></div>
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-ttl">Señas detectadas</div>
+      <div class="panel-sub" id="psub"></div>
     </div>
-    <div class="signs-display" id="signs-display">
-      <div class="empty-state">
-        <div class="big-icon">🤲</div>
-        <p>Presiona el micrófono y di algo.<br>Las señas de <strong>palabras completas</strong> aparecerán aquí.</p>
+    <div class="signs-grid" id="grid">
+      <div class="empty">
+        <div class="ico">🤲</div>
+        <p>Presiona el micrófono y habla.<br>Cada palabra mostrará su <strong>seña ilustrada</strong>.</p>
       </div>
     </div>
-    <div class="word-chips" id="word-chips"></div>
+    <div class="chips" id="chips"></div>
   </div>
 
-  <div class="support-note">
-    💡 Las señas muestran el concepto por <strong>palabra completa</strong>. Si una palabra no tiene seña registrada, se deletrea solo como último recurso.
-  </div>
+  <div class="note">💡 Las ilustraciones muestran la posición de mano para cada concepto. El movimiento se describe en la instrucción de cada tarjeta.</div>
 </div>
 
 <!-- SETTINGS -->
-<div class="settings-overlay" id="settings-overlay" onclick="handleOverlayClick(event)">
-  <div class="settings-drawer">
-    <div class="drawer-handle"></div>
-    <div class="drawer-header">
-      <h2>⚙️ Ajustes</h2>
-      <button class="drawer-close" onclick="closeSettings()">✕</button>
+<div class="ov" id="ov" onclick="ovClick(event)">
+  <div class="drawer">
+    <div class="dh"></div>
+    <div class="dhead"><h2>// Ajustes</h2><button class="dcl" onclick="closeS()">✕</button></div>
+
+    <div class="dsec">
+      <div class="dlbl">Apariencia</div>
+      <div class="drow"><div class="dr-info"><div class="rt">Tema claro</div><div class="rd">Fondo blanco vs oscuro</div></div><label class="tw"><input type="checkbox" class="ti" id="t-theme" onchange="applyTheme()"><span class="tt"></span></label></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Color de acento</div><div class="rd">Color principal de la interfaz</div></div><div class="cr"><div class="cs on" style="background:#7ee8fa" data-c="#7ee8fa" onclick="setAccent(this)"></div><div class="cs" style="background:#a78bfa" data-c="#a78bfa" onclick="setAccent(this)"></div><div class="cs" style="background:#6effc0" data-c="#6effc0" onclick="setAccent(this)"></div><div class="cs" style="background:#f9e784" data-c="#f9e784" onclick="setAccent(this)"></div><div class="cs" style="background:#fca5a5" data-c="#fca5a5" onclick="setAccent(this)"></div><div class="cs" style="background:#93c5fd" data-c="#93c5fd" onclick="setAccent(this)"></div></div></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Tamaño de tarjetas</div><div class="rd">Tamaño de cada ilustración</div></div><div class="sw"><input type="range" min="90" max="180" value="130" id="s-card" oninput="setCardSize(this.value)"><span class="sv" id="v-card">130px</span></div></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Tamaño de texto</div><div class="rd">Fuente general</div></div><div class="sw"><input type="range" min="12" max="22" value="16" id="s-font" oninput="setFontSize(this.value)"><span class="sv" id="v-font">16px</span></div></div>
     </div>
 
-    <div class="settings-section">
-      <div class="settings-label">Apariencia</div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Tema claro</div><div class="row-desc">Cambia entre fondo oscuro y claro</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-theme" onchange="applyTheme()"><span class="toggle-track"></span></label>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Color de acento</div><div class="row-desc">Color principal de la interfaz</div></div>
-        <div class="color-row">
-          <div class="color-swatch selected" style="background:#00e5ff" data-color="#00e5ff" onclick="setAccent(this)"></div>
-          <div class="color-swatch" style="background:#a855f7" data-color="#a855f7" onclick="setAccent(this)"></div>
-          <div class="color-swatch" style="background:#f43f5e" data-color="#f43f5e" onclick="setAccent(this)"></div>
-          <div class="color-swatch" style="background:#10b981" data-color="#10b981" onclick="setAccent(this)"></div>
-          <div class="color-swatch" style="background:#f59e0b" data-color="#f59e0b" onclick="setAccent(this)"></div>
-          <div class="color-swatch" style="background:#3b82f6" data-color="#3b82f6" onclick="setAccent(this)"></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Tamaño de tarjetas</div><div class="row-desc">Tamaño de cada tarjeta de seña</div></div>
-        <div class="slider-wrap"><input type="range" min="70" max="140" value="100" id="slider-card" oninput="setCardSize(this.value)"><span class="slider-val" id="val-card">100px</span></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Tamaño de texto</div><div class="row-desc">Fuente general de la app</div></div>
-        <div class="slider-wrap"><input type="range" min="12" max="22" value="16" id="slider-font" oninput="setFontSize(this.value)"><span class="slider-val" id="val-font">16px</span></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Tamaño de emojis</div><div class="row-desc">Qué tan grandes se muestran los emojis</div></div>
-        <div class="slider-wrap"><input type="range" min="1.5" max="5" step="0.1" value="3.2" id="slider-emoji" oninput="setEmojiSize(this.value)"><span class="slider-val" id="val-emoji">3.2</span></div>
-      </div>
+    <div class="dsec">
+      <div class="dlbl">Reconocimiento de Voz</div>
+      <div class="drow"><div class="dr-info"><div class="rt">Idioma</div><div class="rd">Idioma en el que hablas</div></div><select class="ls" id="s-lang" onchange="setLang(this.value)"><option value="es-CO">Español (CO)</option><option value="es-MX">Español (MX)</option><option value="es-ES">Español (ES)</option><option value="es-AR">Español (AR)</option><option value="en-US">English (US)</option><option value="pt-BR">Português (BR)</option></select></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Texto interino</div><div class="rd">Ver texto mientras hablas</div></div><label class="tw"><input type="checkbox" class="ti" id="t-int" checked onchange="save()"><span class="tt"></span></label></div>
     </div>
 
-    <div class="settings-section">
-      <div class="settings-label">Reconocimiento de Voz</div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Idioma del micrófono</div><div class="row-desc">Idioma en el que vas a hablar</div></div>
-        <select class="lang-select" id="lang-select" onchange="setLang(this.value)">
-          <option value="es-MX">Español (MX)</option>
-          <option value="es-ES">Español (ES)</option>
-          <option value="es-CO">Español (CO)</option>
-          <option value="es-AR">Español (AR)</option>
-          <option value="en-US">English (US)</option>
-          <option value="en-GB">English (UK)</option>
-          <option value="pt-BR">Português (BR)</option>
-        </select>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Texto mientras hablas</div><div class="row-desc">Mostrar el texto antes de terminar la frase</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-interim" checked onchange="persist()"><span class="toggle-track"></span></label>
-      </div>
+    <div class="dsec">
+      <div class="dlbl">Comportamiento</div>
+      <div class="drow"><div class="dr-info"><div class="rt">Instrucción del movimiento</div><div class="rd">Texto explicando cómo hacer la seña</div></div><label class="tw"><input type="checkbox" class="ti" id="t-det" checked onchange="save()"><span class="tt"></span></label></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Categoría de la seña</div><div class="rd">Etiqueta de contexto (Trabajo, Hogar…)</div></div><label class="tw"><input type="checkbox" class="ti" id="t-cat" checked onchange="save()"><span class="tt"></span></label></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Animaciones</div><div class="rd">Animar tarjetas al aparecer</div></div><label class="tw"><input type="checkbox" class="ti" id="t-anim" checked onchange="save()"><span class="tt"></span></label></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Dactilología como último recurso</div><div class="rd">Deletrear solo si no hay seña registrada</div></div><label class="tw"><input type="checkbox" class="ti" id="t-fall" checked onchange="save()"><span class="tt"></span></label></div>
+      <div class="drow"><div class="dr-info"><div class="rt">Máx. letras al deletrear</div><div class="rd">Límite de letras en modo dactilológico</div></div><div class="sw"><input type="range" min="5" max="50" value="30" id="s-maxl" oninput="setMaxL(this.value)"><span class="sv" id="v-maxl">30</span></div></div>
     </div>
 
-    <div class="settings-section">
-      <div class="settings-label">Comportamiento de Señas</div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Mostrar instrucción del movimiento</div><div class="row-desc">Texto que explica cómo hacer la seña</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-detail" checked onchange="persist()"><span class="toggle-track"></span></label>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Mostrar categoría de la seña</div><div class="row-desc">Etiqueta de contexto (Trabajo, Hogar, etc.)</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-cat" checked onchange="persist()"><span class="toggle-track"></span></label>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Animaciones de entrada</div><div class="row-desc">Animar las tarjetas al aparecer</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-anim" checked onchange="persist()"><span class="toggle-track"></span></label>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Dactilología como último recurso</div><div class="row-desc">Deletrear solo si la palabra no tiene seña registrada</div></div>
-        <label class="toggle-wrap"><input type="checkbox" class="toggle-input" id="toggle-fallback" checked onchange="persist()"><span class="toggle-track"></span></label>
-      </div>
-      <div class="settings-row">
-        <div class="row-info"><div class="row-title">Máx. letras al deletrear</div><div class="row-desc">Cuántas letras mostrar en dactilología</div></div>
-        <div class="slider-wrap"><input type="range" min="5" max="50" value="30" id="slider-maxl" oninput="setMaxLetters(this.value)"><span class="slider-val" id="val-maxl">30</span></div>
-      </div>
-    </div>
-
-    <button class="reset-btn" onclick="resetSettings()">🔄 Restaurar ajustes predeterminados</button>
+    <button class="rb" onclick="resetCfg()">↺ Restaurar predeterminados</button>
   </div>
 </div>
 
 <script>
-// ── ALPHABET ──────────────────────────────────────────────────────────────────
-const ALP = {
-  A:'🤛',B:'🖐️',C:'🤏',D:'👆',E:'🤞',F:'👌',G:'👈',H:'🤙',I:'🤙',J:'✋',
-  K:'✌️',L:'🤙',M:'🤜',N:'✊',O:'👌',P:'👇',Q:'👇',R:'🤞',S:'✊',T:'✊',
-  U:'✌️',V:'✌️',W:'🖖',X:'☝️',Y:'🤙',Z:'☝️',
-  'Á':'🤛','É':'🤞','Í':'🤙','Ó':'👌','Ú':'🤙','Ü':'🤙','Ñ':'🤞',' ':'⬜'
+// ════════════════════════════════════════════════════════
+//  SVG HAND ILLUSTRATIONS  — one per word concept
+// ════════════════════════════════════════════════════════
+// Each SVG is a 100×100 viewBox illustration of a hand position.
+// Stroke color uses currentColor so it adapts to theme.
+
+const HAND_SVG = {
+
+  // ── HOLA ── open palm waving
+  hola:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="38" y="18" width="10" height="38" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="50" y="14" width="10" height="42" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="62" y="18" width="10" height="38" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="26" y="24" width="10" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M26 54 Q26 68 38 72 L62 72 Q74 68 74 54 L74 54 L26 54Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M38 72 L38 80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M62 72 L62 80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M82 40 Q90 50 82 60" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+    <path d="M88 36 Q98 50 88 64" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4" opacity=".5"/>
+  </svg>`,
+
+  // ── GRACIAS ── fingers touch chin then extend
+  gracias:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 55 Q30 70 50 75 Q70 70 70 55 L70 40 Q70 32 62 32 Q56 32 54 37 Q52 30 46 30 Q40 30 38 36 Q36 28 30 30 Q24 32 24 40 L24 55Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="50" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/>
+    <path d="M50 30 L50 35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M40 75 L40 82 M50 76 L50 84 M60 75 L60 82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M54 37 Q60 42 58 50" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+  </svg>`,
+
+  // ── SÍ ── closed fist nodding
+  sí:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="32" y="38" width="36" height="32" rx="10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M32 50 L68 50" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+    <rect x="34" y="28" width="12" height="14" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M32 70 L32 78 M50 72 L50 80 M68 70 L68 78" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M55 20 L55 35" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+    <path d="M55 20 L55 35 M51 30 L55 35 L59 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M45 20 L45 35 M41 30 L45 35 L49 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".4"/>
+  </svg>`,
+
+  // ── NO ── index+middle side-to-side
+  no:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 80 Q30 70 38 68 L38 38 Q38 30 45 30 Q52 30 52 38 L52 38 L52 38 Q52 30 59 30 Q66 30 66 38 L66 60 Q74 62 74 72 L74 80Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M52 38 L52 60" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+    <path d="M20 50 L28 42 M80 50 L72 42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3"/>
+    <path d="M18 54 L30 54" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M70 54 L82 54" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+  </svg>`,
+
+  // ── POR FAVOR ── palms together
+  'por favor':`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M26 35 Q26 25 34 25 Q42 25 42 35 L42 65 Q42 75 34 75 Q26 75 26 65Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M58 35 Q58 25 66 25 Q74 25 74 35 L74 65 Q74 75 66 75 Q58 75 58 65Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M42 40 L58 40 M42 50 L58 50 M42 60 L58 60" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+    <path d="M42 30 L58 30" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M42 70 L58 70" stroke="currentColor" stroke-width="2.5"/>
+  </svg>`,
+
+  // ── AYUDA ── fist on open palm lifting up
+  ayuda:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="32" y="45" width="36" height="28" rx="9" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="34" y="36" width="11" height="13" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M18 74 L82 74" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M50 20 L50 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M42 28 L50 20 L58 28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 32 L50 24 L58 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".35"/>
+  </svg>`,
+
+  // ── FAMILIA ── F shape, circle motion
+  familia:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="30" y="20" width="10" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="42" y="16" width="10" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="54" y="20" width="10" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M22 50 Q22 62 30 66 L70 66 Q78 62 78 50" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M30 66 L30 72 M50 68 L50 74 M70 66 L70 72" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M20 80 Q50 90 80 80" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" opacity=".4"/>
+    <circle cx="50" cy="88" r="3" fill="currentColor" opacity=".3"/>
+  </svg>`,
+
+  // ── AMOR ── arms crossed on chest
+  amor:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 38 Q22 30 30 30 Q36 30 38 36 L50 60 L62 36 Q64 30 70 30 Q78 30 78 38 L78 50 Q78 66 50 80 Q22 66 22 50Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M35 48 L50 65 L65 48" stroke="currentColor" stroke-width="1.5" opacity=".3" stroke-linecap="round"/>
+  </svg>`,
+
+  // ── TRABAJO ── wrists/fists one over other
+  trabajo:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="28" y="20" width="44" height="26" rx="9" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="28" y="54" width="44" height="26" rx="9" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M28 46 L72 46 M28 54 L72 54" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+    <path d="M50 10 L50 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+    <path d="M50 80 L50 90" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+    <rect x="40" y="12" width="20" height="6" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+  </svg>`,
+
+  // ── ESCUELA ── clapping
+  escuela:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 55 Q22 42 30 40 Q36 38 40 42 L58 42 Q62 38 68 40 Q76 42 76 55 L76 62 Q76 72 68 75 L32 75 Q24 72 22 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M40 42 L40 32 Q40 24 46 22 Q54 20 56 28 L58 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M58 75 L60 84 M42 75 L40 84" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M30 56 L70 56" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+    <path d="M16 55 Q10 50 16 45 M84 55 Q90 50 84 45" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".4"/>
+  </svg>`,
+
+  // ── REUNIÓN ── two hands meet in center
+  'reunión':`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 55 Q14 44 22 42 Q28 40 32 44 L32 60 Q32 70 24 72 Q16 70 14 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="14" y="32" width="10" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="26" y="28" width="10" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M86 55 Q86 44 78 42 Q72 40 68 44 L68 60 Q68 70 76 72 Q84 70 86 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="76" y="32" width="10" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="64" y="28" width="10" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M32 54 L68 54" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+    <path d="M40 48 L60 48 M40 60 L60 60" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+  </svg>`,
+
+  // ── CASA ── fingertips form a roof
+  casa:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 18 L78 42 L78 80 L22 80 L22 42 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M38 80 L38 58 Q38 52 44 52 L56 52 Q62 52 62 58 L62 80" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="42" y="40" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+    <path d="M42 46 L58 46 M50 40 L50 52" stroke="currentColor" stroke-width="1" opacity=".4"/>
+  </svg>`,
+
+  // ── DOCTOR ── D shape on wrist
+  doctor:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 60 Q70 68 60 70 L30 70Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M30 55 L70 55" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+    <path d="M30 70 L30 82 M60 70 L60 82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M18 76 L82 76" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M50 30 L50 50 M40 40 L60 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>`,
+
+  // ── AGUA ── W shape tapping lips
+  agua:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M26 24 L26 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M38 20 L38 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M50 24 L50 55" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M26 55 Q32 62 38 55 Q44 62 50 55" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M26 55 Q26 68 32 72 L44 72 Q50 68 50 55" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M50 55 L50 72 M50 72 L56 72" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="72" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2" opacity=".6"/>
+    <path d="M72 32 L72 52" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3" opacity=".4"/>
+  </svg>`,
+
+  // ── COMIDA ── fingers to mouth
+  comida:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M36 50 Q36 38 44 36 Q52 34 56 40 L60 48 Q64 56 60 64 Q56 72 48 72 Q38 72 36 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M36 50 L28 40 Q24 34 28 28 Q32 22 38 26 L44 36" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M46 80 L48 88" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="70" cy="30" r="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 3" opacity=".5"/>
+    <path d="M64 36 L58 46" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".4"/>
+    <path d="M54 82 Q60 90 66 82" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+  </svg>`,
+
+  // ── APRENDER ── hand on forehead absorbing
+  aprender:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M28 50 Q28 38 36 36 L36 28 Q36 20 44 20 Q52 20 52 28 L52 36 Q60 38 62 48 L62 62 Q62 72 50 74 Q36 74 28 64Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M44 20 L44 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M36 28 L28 24 M52 28 L60 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+    <path d="M50 74 L52 82 M38 74 L36 82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M68 38 Q76 50 68 62" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".4"/>
+    <circle cx="72" cy="22" r="5" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+    <path d="M69 26 L64 36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+  </svg>`,
+
+  // ── HABLAR / COMUNICACIÓN ── hand from mouth outward
+  comunicación:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="38" cy="32" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M38 26 L38 32 L44 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M52 40 Q58 44 58 52 L58 72 Q58 80 50 80 L28 80 Q20 80 20 72 L20 52 Q20 40 30 38" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M36 80 L36 90" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M44 80 L44 88" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M64 50 Q72 50 76 44 M64 58 Q76 58 80 50 M64 66 Q72 66 76 72" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".5"/>
+  </svg>`,
+
+  // ── TIEMPO / HORA ── pointing at wrist
+  tiempo:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 55 Q22 44 30 42 Q36 40 40 44 L40 58 Q40 68 32 70 Q24 68 22 60Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="22" y="32" width="10" height="14" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="34" y="28" width="10" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="68" cy="50" r="18" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M68 36 L68 50 L78 50" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44 52 L50 52" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M46 46 L50 50 L46 54" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+
+  // ── FELIZ ── circular motion on chest
+  feliz:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 55 Q30 40 40 36 L40 28 Q40 20 48 20 Q56 20 56 28 L56 36 Q66 40 66 55 L66 62 Q66 74 48 76 Q30 74 30 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M46 76 L46 84 M54 76 L54 84" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M72 40 Q80 50 76 62" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2" opacity=".5"/>
+    <path d="M80 36 Q92 50 86 66" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4" opacity=".3"/>
+    <path d="M38 50 Q44 56 58 50" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+  </svg>`,
+
+  // ── TRISTE ── hands slide down face
+  triste:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 30 Q20 18 30 18 Q40 18 40 30 L40 55 Q40 65 32 68 Q22 65 20 55Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M60 30 Q60 18 70 18 Q80 18 80 30 L80 55 Q80 65 72 68 Q62 65 60 55Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M40 68 L40 78 M60 68 L60 78" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M28 68 L26 82 M72 68 L74 82" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3" opacity=".5"/>
+    <path d="M40 40 L60 40" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" opacity=".3"/>
+  </svg>`,
+
+  // ── ESPERA ── palm out, fingers up
+  espera:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="36" y="16" width="10" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="48" y="12" width="10" height="40" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="60" y="16" width="10" height="36" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="24" y="22" width="10" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M24 52 Q24 64 36 68 L64 68 Q76 64 76 52" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M36 68 L36 76 M53 70 L53 78 L70 68 L70 76" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 38 Q6 50 12 62" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2" opacity=".5"/>
+  </svg>`,
+
+  // ── NO ENTIENDO ── shrug — shoulders up, palms out
+  'no entiendo':`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 55 Q18 44 24 42 L28 42 L28 60 Q28 68 22 70 Q16 68 18 60Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M14 42 L18 34 M28 40 L36 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M82 55 Q82 44 76 42 L72 42 L72 60 Q72 68 78 70 Q84 68 82 60Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M86 42 L82 34 M72 40 L64 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M36 36 Q50 28 64 36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M38 46 Q50 40 62 46" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <circle cx="50" cy="20" r="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2" opacity=".4"/>
+    <path d="M50 28 L50 36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <text x="46" y="25" font-size="10" fill="currentColor" opacity=".5" font-family="serif">?</text>
+  </svg>`,
+
+  // ── IDEA ── index finger rises from temple
+  idea:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 65 Q30 54 38 52 L38 46 Q38 38 44 36 Q52 34 54 40 L56 52 Q64 54 64 65 L64 72 Q64 80 47 82 Q30 80 30 72Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M46 82 L46 90 M54 82 L54 90" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M52 36 L52 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M44 26 L52 18 L60 26" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="52" cy="14" r="4" fill="currentColor" opacity=".4"/>
+    <path d="M68 30 Q76 22 72 14 M76 36 Q86 24 80 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".4"/>
+  </svg>`,
+
+  // ── URGENTE ── U hand shaking side to side quickly
+  urgente:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="36" y="22" width="10" height="32" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="54" y="22" width="10" height="32" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M36 50 Q36 60 50 64 Q64 60 64 50" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M50 64 L50 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 48 L22 44 M86 48 L78 44 M14 52 L22 56 M86 52 L78 56" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+    <path d="M10 50 L18 50 M82 50 L90 50" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".4"/>
+  </svg>`,
+
+  // ── EQUIPO ── both hands join at center
+  equipo:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 55 Q14 44 20 42 L34 42 L34 60 Q34 70 24 72 Q14 70 14 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M86 55 Q86 44 80 42 L66 42 L66 60 Q66 70 76 72 Q86 70 86 62Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M34 52 L66 52" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M34 46 L42 46 M58 46 L66 46" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <circle cx="50" cy="52" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M14 72 L14 80 M86 72 L86 80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`,
+
+  // ── PROBLEMA ── P shaking in front of face
+  problema:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 30 L30 70 M30 30 Q54 28 54 46 Q54 64 30 62" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M30 46 L50 46" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M18 22 L24 28 M82 22 L76 28 M18 78 L24 72 M82 78 L76 72" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+    <circle cx="50" cy="18" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/>
+    <path d="M50 24 L50 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".4"/>
+  </svg>`,
+
+  // ── SOLUCIÓN ── S at chest, hand opens upward
+  'solución':`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M36 56 Q32 50 36 44 Q40 38 48 40 Q56 38 60 44 Q64 50 60 56 Q56 62 48 62 Q40 62 36 56Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M48 62 L48 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M38 74 L58 74" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M48 40 L48 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 30 L48 20 L60 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M68 46 Q76 38 72 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".5"/>
+    <circle cx="74" cy="24" r="4" fill="currentColor" opacity=".35"/>
+  </svg>`,
+
+  // ── PRESENTACIÓN ── hands spread wide outward
+  'presentación':`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="18" y="40" width="10" height="28" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="30" y="34" width="10" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M18 68 Q18 78 28 80 Q38 82 40 72 L40 68" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="60" y="40" width="10" height="28" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="60" y="34" width="10" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M82 68 Q82 78 72 80 Q62 82 60 72 L60 68" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M40 52 L60 52" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/>
+    <path d="M10 54 L18 50 M90 54 L82 50" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+  </svg>`,
+
+  // ── APROBADO ── flat palm hits other hand firmly
+  aprobado:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 50 L82 50" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="M30 32 Q30 20 40 20 Q50 20 50 32 L50 50" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M50 50 L50 32 Q50 20 60 20 Q70 20 70 32 L70 50" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M42 70 L50 62 L58 70" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M50 62 L50 80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M30 56 L30 82 M70 56 L70 82" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".3"/>
+  </svg>`,
+
+  // ── LEER ── two index fingers scan back and forth over palm
+  leer:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 45 Q22 35 30 33 L70 33 Q78 35 78 45 L78 72 Q78 80 70 80 L30 80 Q22 78 22 72Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M34 46 L66 46 M34 56 L66 56 M34 66 L54 66" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+    <path d="M34 33 L34 22 Q34 16 40 16 Q46 16 46 22 L46 33" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M16 56 L24 50 L24 62Z" fill="currentColor" opacity=".5"/>
+    <path d="M84 56 L76 50 L76 62Z" fill="currentColor" opacity=".5"/>
+  </svg>`,
+
+  // ── DORMIR ── head tilts on hand
+  dormir:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30 55 Q30 42 40 40 L40 30 Q40 22 48 22 Q56 22 56 30 L56 40 Q66 42 66 55 L66 65 Q66 76 48 78 Q30 76 30 65Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M46 78 L46 86 M54 78 L54 86" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M70 36 Q78 30 76 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2" opacity=".5"/>
+    <path d="M74 42 Q84 34 82 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity=".35"/>
+    <path d="M38 52 Q44 58 58 52" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+  </svg>`,
+
+  // fallback generic hand
+  _default:`<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="32" y="22" width="10" height="32" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="44" y="16" width="10" height="38" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="56" y="22" width="10" height="32" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="20" y="30" width="10" height="24" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M20 54 Q20 66 32 70 L68 70 Q80 66 80 54" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M32 70 L32 80 M50 72 L50 82 M68 70 L68 80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`,
 };
 
-// ── DICCIONARIO COMPLETO ──────────────────────────────────────────────────────
-// Formato: 'palabra': { e: emoji, d: instrucción, c: categoría }
-const WORDS = {
-  // ══ SALUDOS Y CORTESÍA ══
-  'hola':             {e:'👋',d:'Mano abierta, agita de lado a lado',c:'Saludo'},
-  'adiós':            {e:'🤚',d:'Palma afuera, agita suavemente',c:'Saludo'},
-  'buenos días':      {e:'🌅',d:'Mano abierta sube desde la cintura',c:'Saludo'},
-  'buenas tardes':    {e:'🌇',d:'Mano abierta, baja levemente',c:'Saludo'},
-  'buenas noches':    {e:'🌙',d:'Manos juntas, recuesta la cabeza',c:'Saludo'},
-  'bienvenido':       {e:'🤗',d:'Palma abierta, gesto de invitar a entrar',c:'Saludo'},
-  'bienvenidos':      {e:'🤗',d:'Ambas palmas abiertas hacia afuera',c:'Saludo'},
-  'hasta luego':      {e:'👋',d:'Mano abierta, agita lentamente',c:'Saludo'},
-  'hasta mañana':     {e:'🌄',d:'Agita la mano, señala hacia adelante',c:'Saludo'},
-  'mucho gusto':      {e:'🤝',d:'Estrecha la mano imaginaria',c:'Saludo'},
-  'gracias':          {e:'🙏',d:'Toca la barbilla, lleva la mano adelante',c:'Cortesía'},
-  'por favor':        {e:'🤲',d:'Palmas unidas hacia arriba, mueve suave',c:'Cortesía'},
-  'de nada':          {e:'😊',d:'Palma al pecho, lleva hacia adelante',c:'Cortesía'},
-  'perdón':           {e:'🙇',d:'Puño en el pecho, círculo pequeño',c:'Cortesía'},
-  'disculpe':         {e:'✋',d:'Palma hacia afuera, inclina cabeza',c:'Cortesía'},
-  'con permiso':      {e:'🚶',d:'Mano plana pasa sobre la otra',c:'Cortesía'},
-  'lo siento':        {e:'😔',d:'Puño en el pecho, círculo lento',c:'Cortesía'},
+// ── ALPHABET for dactylology ──────────────────────────────────────────────────
+const ALP={A:'🤛',B:'🖐️',C:'🤏',D:'👆',E:'🤞',F:'👌',G:'👈',H:'🤙',I:'🤙',J:'✋',K:'✌️',L:'🤙',M:'🤜',N:'✊',O:'👌',P:'👇',Q:'👇',R:'🤞',S:'✊',T:'✊',U:'✌️',V:'✌️',W:'🖖',X:'☝️',Y:'🤙',Z:'☝️','Á':'🤛','É':'🤞','Í':'🤙','Ó':'👌','Ú':'🤙','Ü':'🤙','Ñ':'🤞',' ':'⬜'};
 
-  // ══ RESPUESTAS BÁSICAS ══
-  'sí':               {e:'✅',d:'Puño cerrado, mueve arriba y abajo',c:'Respuesta'},
-  'no':               {e:'❌',d:'Índice y medio juntos, mueve de lado',c:'Respuesta'},
-  'tal vez':          {e:'🤔',d:'Mano plana, inclina de un lado al otro',c:'Respuesta'},
-  'bien':             {e:'👍',d:'Pulgar arriba',c:'Respuesta'},
-  'mal':              {e:'👎',d:'Pulgar abajo',c:'Respuesta'},
-  'más o menos':      {e:'🫳',d:'Mano horizontal, inclina levemente',c:'Respuesta'},
-  'no sé':            {e:'🤷',d:'Encoge hombros con palmas arriba',c:'Respuesta'},
-  'claro':            {e:'✅',d:'Pulgar arriba con movimiento firme',c:'Respuesta'},
-  'correcto':         {e:'✔️',d:'Índice traza una palomita en el aire',c:'Respuesta'},
-  'incorrecto':       {e:'❌',d:'Índice cruza en X en el aire',c:'Respuesta'},
-  'entendido':        {e:'👌',d:'OK con la mano, asiente con la cabeza',c:'Respuesta'},
-  'no entiendo':      {e:'🤷',d:'Encoge hombros, palmas hacia arriba',c:'Respuesta'},
-  'repite':           {e:'🔁',d:'Círculo en el aire con el índice',c:'Respuesta'},
-  'espera':           {e:'✋',d:'Palma hacia afuera, dedos arriba',c:'Respuesta'},
-
-  // ══ EMOCIONES ══
-  'feliz':            {e:'😊',d:'Palma al pecho, círculo hacia arriba',c:'Emoción'},
-  'triste':           {e:'😢',d:'Manos al rostro, bajan lentamente',c:'Emoción'},
-  'enojado':          {e:'😠',d:'Dedos curvados frente al rostro',c:'Emoción'},
-  'miedo':            {e:'😨',d:'Manos abiertas a los lados del rostro',c:'Emoción'},
-  'sorprendido':      {e:'😲',d:'Manos abiertas a los lados de la cara',c:'Emoción'},
-  'cansado':          {e:'😴',d:'Dedos doblados al pecho, inclina cuerpo',c:'Emoción'},
-  'amor':             {e:'❤️',d:'Cruza los brazos sobre el pecho',c:'Emoción'},
-  'contento':         {e:'😄',d:'Palmas al pecho, sube con alegría',c:'Emoción'},
-  'nervioso':         {e:'😰',d:'Dedos entrelazados, mueve nerviosamente',c:'Emoción'},
-  'emocionado':       {e:'🤩',d:'Manos abiertas, vibra con entusiasmo',c:'Emoción'},
-  'aburrido':         {e:'😑',d:'Índice en la mejilla, gira lento',c:'Emoción'},
-  'confundido':       {e:'😕',d:'Índice apunta a la sien, gira',c:'Emoción'},
-  'orgulloso':        {e:'🦁',d:'Puño al pecho, empuja hacia afuera',c:'Emoción'},
-
-  // ══ REUNIONES DE TRABAJO ══
-  'reunión':          {e:'👥',d:'Ambas manos con dedos extendidos, únelas',c:'Trabajo'},
-  'presentación':     {e:'📊',d:'Palmas abiertas hacia afuera, mueve de izq a der',c:'Trabajo'},
-  'proyecto':         {e:'📋',d:'P sobre la palma opuesta',c:'Trabajo'},
-  'agenda':           {e:'📅',d:'A sobre la palma, señala puntos',c:'Trabajo'},
-  'objetivo':         {e:'🎯',d:'Índice apunta al centro de la palma opuesta',c:'Trabajo'},
-  'meta':             {e:'🏁',d:'M en el pecho, empuja hacia adelante',c:'Trabajo'},
-  'plazo':            {e:'⏰',d:'P apunta al reloj imaginario',c:'Trabajo'},
-  'fecha límite':     {e:'📆',d:'Palma plana, golpe firme sobre la otra mano',c:'Trabajo'},
-  'presupuesto':      {e:'💰',d:'P frota pulgar e índice',c:'Trabajo'},
-  'informe':          {e:'📄',d:'I sobre palma, pasa como leyendo',c:'Trabajo'},
-  'reporte':          {e:'📊',d:'R sobre palma, señala hacia adelante',c:'Trabajo'},
-  'propuesta':        {e:'💡',d:'P al pecho, abre la mano hacia arriba',c:'Trabajo'},
-  'aprobado':         {e:'✅',d:'Palma plana, golpea suave sobre la otra',c:'Trabajo'},
-  'rechazado':        {e:'❌',d:'Palmas cruzadas empujan hacia afuera',c:'Trabajo'},
-  'pendiente':        {e:'⏳',d:'P cuelga del índice opuesto',c:'Trabajo'},
-  'urgente':          {e:'🚨',d:'U en movimiento rápido de lado a lado',c:'Trabajo'},
-  'importante':       {e:'❗',d:'I al pecho con movimiento firme',c:'Trabajo'},
-  'estrategia':       {e:'♟️',d:'E frente a los ojos, mueve hacia adelante',c:'Trabajo'},
-  'equipo':           {e:'👥',d:'E con ambas manos, úne en el centro',c:'Trabajo'},
-  'líder':            {e:'👑',d:'L en la frente, toca levemente',c:'Trabajo'},
-  'jefe':             {e:'👔',d:'J en el hombro',c:'Trabajo'},
-  'colega':           {e:'🤝',d:'C luego señal de amistad',c:'Trabajo'},
-  'cliente':          {e:'🧑‍💼',d:'C en el pecho, señal de dar',c:'Trabajo'},
-  'contrato':         {e:'📝',d:'C sobre palma, simula firmar',c:'Trabajo'},
-  'firma':            {e:'✍️',d:'Simula firmar con índice sobre palma',c:'Trabajo'},
-  'acuerdo':          {e:'🤝',d:'Estrechón de manos',c:'Trabajo'},
-  'desacuerdo':       {e:'🙅',d:'Palmas cruzadas, empuja hacia afuera',c:'Trabajo'},
-  'decisión':         {e:'⚖️',d:'Ambas manos como balanza, inclina',c:'Trabajo'},
-  'problema':         {e:'⚠️',d:'P frente al rostro con expresión seria',c:'Trabajo'},
-  'solución':         {e:'💡',d:'S al pecho, abre la mano arriba',c:'Trabajo'},
-  'idea':             {e:'💡',d:'Índice sube desde la sien hacia arriba',c:'Trabajo'},
-  'cambio':           {e:'🔄',d:'Índices rotan entre sí',c:'Trabajo'},
-  'avance':           {e:'⬆️',d:'Palma sube lentamente',c:'Trabajo'},
-  'progreso':         {e:'📈',d:'Mano sube en diagonal hacia adelante',c:'Trabajo'},
-  'resultado':        {e:'🏆',d:'R al frente, abre la mano',c:'Trabajo'},
-  'éxito':            {e:'🎉',d:'Ambas manos abren hacia arriba con alegría',c:'Trabajo'},
-  'fracaso':          {e:'😓',d:'Manos caen hacia abajo con resignación',c:'Trabajo'},
-  'revisión':         {e:'🔍',d:'R frente al ojo, mueve de izq a der',c:'Trabajo'},
-  'corrección':       {e:'✏️',d:'Simula borrar y escribir de nuevo',c:'Trabajo'},
-  'actualización':    {e:'🔄',d:'A con círculo hacia adelante',c:'Trabajo'},
-  'implementar':      {e:'🔧',d:'I sobre palma, empuja hacia adelante',c:'Trabajo'},
-  'lanzar':           {e:'🚀',d:'Puño sube rápido como cohete',c:'Trabajo'},
-  'comunicación':     {e:'💬',d:'C va del pecho hacia la boca y adelante',c:'Trabajo'},
-  'correo':           {e:'📧',d:'C sobre palma, simula abrir sobre',c:'Trabajo'},
-  'mensaje':          {e:'💬',d:'M del pecho hacia adelante',c:'Trabajo'},
-  'llamada':          {e:'📞',d:'Y en el oído',c:'Trabajo'},
-  'videoconferencia': {e:'📹',d:'V frente al ojo, señal de cámara',c:'Trabajo'},
-  'compartir':        {e:'📤',d:'Palma hacia arriba, empuja hacia adelante',c:'Trabajo'},
-  'presentar':        {e:'🎤',d:'P al frente, abre hacia el público',c:'Trabajo'},
-  'explicar':         {e:'🗣️',d:'E del pecho sale hacia afuera',c:'Trabajo'},
-  'preguntar':        {e:'❓',d:'Índice apunta arriba, inclina la cabeza',c:'Trabajo'},
-  'responder':        {e:'💬',d:'R del pecho sale hacia adelante',c:'Trabajo'},
-  'analizar':         {e:'🔎',d:'A frente a los ojos, mueve lento',c:'Trabajo'},
-  'planificar':       {e:'📋',d:'P sobre palma, señala puntos',c:'Trabajo'},
-  'organizar':        {e:'🗂️',d:'O con ambas manos, ordena hacia la derecha',c:'Trabajo'},
-  'delegar':          {e:'👉',d:'Señala hacia otro con firmeza',c:'Trabajo'},
-  'colaborar':        {e:'🤝',d:'Ambas manos se mueven juntas',c:'Trabajo'},
-  'innovar':          {e:'💡',d:'I sube en espiral',c:'Trabajo'},
-  'mejorar':          {e:'⬆️',d:'M sube con la mano',c:'Trabajo'},
-  'capacitar':        {e:'📚',d:'C sobre palma, simula abrir libro',c:'Trabajo'},
-  'retroalimentación':{e:'↩️',d:'Ambas manos van y vuelven entre sí',c:'Trabajo'},
-  'prioridad':        {e:'🔝',d:'P sube por encima de las otras cosas',c:'Trabajo'},
-  'recursos':         {e:'📦',d:'R abre las manos hacia los lados',c:'Trabajo'},
-  'tiempo':           {e:'⏰',d:'T apunta al reloj imaginario en la muñeca',c:'General'},
-  'rápido':           {e:'⚡',d:'L jala hacia atrás rápidamente',c:'General'},
-  'lento':            {e:'🐢',d:'Mano se mueve despacio hacia adelante',c:'General'},
-
-  // ══ EDUCACIÓN ══
-  'aprender':         {e:'📖',d:'A sobre la sien, simula absorber',c:'Educación'},
-  'enseñar':          {e:'👩‍🏫',d:'E del pecho hacia el frente',c:'Educación'},
-  'estudiar':         {e:'📚',d:'E sobre palma, simula leer',c:'Educación'},
-  'leer':             {e:'📖',d:'Índices van de izquierda a derecha sobre palma',c:'Educación'},
-  'escribir':         {e:'✍️',d:'Simula escribir sobre la palma',c:'Educación'},
-  'tarea':            {e:'📝',d:'T sobre palma, simula escribir lista',c:'Educación'},
-  'examen':           {e:'📋',d:'E sobre palma, señala preguntas',c:'Educación'},
-  'pregunta':         {e:'❓',d:'Q con el índice curvado',c:'Educación'},
-  'respuesta':        {e:'💬',d:'R del pecho hacia adelante',c:'Educación'},
-  'clase':            {e:'🏫',d:'C luego señala al frente como aula',c:'Educación'},
-  'maestro':          {e:'👩‍🏫',d:'M en la frente, señala hacia el frente',c:'Educación'},
-  'alumno':           {e:'🎒',d:'A en el hombro como mochila',c:'Educación'},
-  'estudiante':       {e:'🎓',d:'E toca la sien, simula pensar',c:'Educación'},
-  'libro':            {e:'📚',d:'Ambas palmas abiertas como libro abierto',c:'Educación'},
-  'cuaderno':         {e:'📓',d:'C sobre palma, simula abrir cuaderno',c:'Educación'},
-  'lápiz':            {e:'✏️',d:'L simula escribir en el aire',c:'Educación'},
-  'computadora':      {e:'💻',d:'C simula teclear sobre palma',c:'Educación'},
-  'internet':         {e:'🌐',d:'I en círculo alrededor de la otra mano',c:'Educación'},
-  'matemáticas':      {e:'🔢',d:'M sobre palma, simula cálculo',c:'Educación'},
-  'ciencias':         {e:'🔬',d:'C simula mirar por microscopio',c:'Educación'},
-  'historia':         {e:'📜',d:'H desenrolla imaginario pergamino',c:'Educación'},
-  'geografía':        {e:'🌍',d:'G simula un globo con ambas manos',c:'Educación'},
-  'arte':             {e:'🎨',d:'A simula pintar en el aire',c:'Educación'},
-  'música':           {e:'🎵',d:'M ondula los dedos como notas musicales',c:'Educación'},
-  'deporte':          {e:'⚽',d:'D simula patear una pelota',c:'Educación'},
-  'universidad':      {e:'🏛️',d:'U luego señala un edificio grande',c:'Educación'},
-  'grado':            {e:'🎓',d:'G sobre la cabeza como birrete',c:'Educación'},
-  'diploma':          {e:'📜',d:'D desenrolla pergamino imaginario',c:'Educación'},
-  'calificación':     {e:'📊',d:'C sobre palma, apunta con índice',c:'Educación'},
-  'aprobado':         {e:'✅',d:'Palma firme sobre la otra mano',c:'Educación'},
-  'reprobado':        {e:'❌',d:'Palmas cruzadas, niega con la cabeza',c:'Educación'},
-  'investigación':    {e:'🔍',d:'I frente a los ojos, mueve de izq a der',c:'Educación'},
-  'proyecto escolar': {e:'📋',d:'P sobre palma, señala puntos de lista',c:'Educación'},
-
-  // ══ VIDA COTIDIANA / HOGAR ══
-  'casa':             {e:'🏠',d:'Forma un triángulo con los dedos',c:'Hogar'},
-  'hogar':            {e:'🏡',d:'H luego triángulo con los dedos',c:'Hogar'},
-  'cocina':           {e:'🍳',d:'C simula revolver en sartén',c:'Hogar'},
-  'baño':             {e:'🚻',d:'T agitada ligeramente en el aire',c:'Hogar'},
-  'cuarto':           {e:'🛏️',d:'C con ambas manos forma un cuadro',c:'Hogar'},
-  'sala':             {e:'🛋️',d:'S luego señala hacia el frente',c:'Hogar'},
-  'comedor':          {e:'🍽️',d:'C luego señala mesa imaginaria',c:'Hogar'},
-  'agua':             {e:'💧',d:'W con la mano, toca los labios',c:'Hogar'},
-  'comida':           {e:'🍽️',d:'Dedos juntos, lleva a la boca repetido',c:'Hogar'},
-  'comer':            {e:'🍽️',d:'Dedos juntos, lleva a la boca',c:'Hogar'},
-  'beber':            {e:'🥤',d:'C al labio como vaso, inclina',c:'Hogar'},
-  'dormir':           {e:'😴',d:'Mano en la mejilla, inclina la cabeza',c:'Hogar'},
-  'despertar':        {e:'⏰',d:'Índice y pulgar como ojos que abren',c:'Hogar'},
-  'limpiar':          {e:'🧹',d:'L simula barrer hacia un lado',c:'Hogar'},
-  'lavar':            {e:'🧼',d:'Frota ambas manos como lavando',c:'Hogar'},
-  'cocinar':          {e:'👨‍🍳',d:'C simula revolver en olla',c:'Hogar'},
-  'comprar':          {e:'🛒',d:'C frota pulgar e índice, empuja adelante',c:'Hogar'},
-  'pagar':            {e:'💳',d:'P frota pulgar e índice',c:'Hogar'},
-  'dinero':           {e:'💰',d:'Frota pulgar e índice repetidamente',c:'Hogar'},
-  'ropa':             {e:'👕',d:'R toca ambos hombros y baja',c:'Hogar'},
-  'zapatos':          {e:'👟',d:'Z golpea los puños entre sí',c:'Hogar'},
-  'trabajo':          {e:'💼',d:'Puños uno sobre otro, mueve',c:'Trabajo'},
-  'descanso':         {e:'🛌',d:'Cruza brazos sobre el pecho',c:'Hogar'},
-  'vacaciones':       {e:'🏖️',d:'V en ambas axilas, mueve hacia afuera',c:'Hogar'},
-  'familia':          {e:'👨‍👩‍👧‍👦',d:'F con ambas manos, traza un círculo',c:'Hogar'},
-  'mamá':             {e:'👩',d:'5 dedos extendidos, toca la barbilla',c:'Hogar'},
-  'papá':             {e:'👨',d:'5 dedos extendidos, toca la frente',c:'Hogar'},
-  'hermano':          {e:'👦',d:'L con ambas manos, une al frente',c:'Hogar'},
-  'hermana':          {e:'👧',d:'A con ambas manos, baja del mentón',c:'Hogar'},
-  'hijo':             {e:'👦',d:'B al frente, baja como meciendo',c:'Hogar'},
-  'hija':             {e:'👧',d:'A en la mejilla, baja como meciendo',c:'Hogar'},
-  'bebé':             {e:'👶',d:'Mécete con brazos cruzados',c:'Hogar'},
-  'amigo':            {e:'🤝',d:'Engancha índices alternadamente',c:'Hogar'},
-  'vecino':           {e:'🏘️',d:'V señala hacia un lado como casa al lado',c:'Hogar'},
-  'mascotas':         {e:'🐾',d:'Acaricia el dorso de la mano',c:'Hogar'},
-  'perro':            {e:'🐕',d:'Chasquea los dedos al muslo',c:'Hogar'},
-  'gato':             {e:'🐈',d:'Traza bigotes desde la mejilla',c:'Hogar'},
-  'mañana':           {e:'🌄',d:'Pulgar en la mejilla, gira hacia adelante',c:'Tiempo'},
-  'ayer':             {e:'⏮️',d:'Pulgar en la mejilla, gira hacia atrás',c:'Tiempo'},
-  'hoy':              {e:'📅',d:'Índices abajo, pequeño círculo',c:'Tiempo'},
-  'ahora':            {e:'⏱️',d:'Y baja con movimiento firme',c:'Tiempo'},
-  'después':          {e:'⏭️',d:'Mano plana avanza hacia adelante',c:'Tiempo'},
-  'antes':            {e:'⏮️',d:'Mano plana retrocede hacia atrás',c:'Tiempo'},
-  'noche':            {e:'🌙',d:'Mano arqueada baja sobre el brazo opuesto',c:'Tiempo'},
-  'tarde':            {e:'🌆',d:'Brazo horizontal, mano cuelga hacia abajo',c:'Tiempo'},
-  'semana':           {e:'📅',d:'S desliza sobre la palma opuesta',c:'Tiempo'},
-  'mes':              {e:'📆',d:'M desliza el índice sobre el opuesto',c:'Tiempo'},
-  'año':              {e:'🗓️',d:'A gira alrededor del índice opuesto',c:'Tiempo'},
-
-  // ══ SALUD Y EMERGENCIAS ══
-  'ayuda':            {e:'🆘',d:'Puño sobre palma abierta, sube urgente',c:'Salud'},
-  'dolor':            {e:'😣',d:'Índices apuntando, mueve en espiral',c:'Salud'},
-  'doctor':           {e:'👨‍⚕️',d:'D sobre la muñeca interna',c:'Salud'},
-  'medicina':         {e:'💊',d:'M sobre la palma, gira',c:'Salud'},
-  'hospital':         {e:'🏥',d:'H en el brazo, forma una cruz',c:'Salud'},
-  'enfermo':          {e:'🤒',d:'Dedo medio al frente, otro al estómago',c:'Salud'},
-  'emergencia':       {e:'🚑',d:'E en el pecho con movimiento rápido',c:'Salud'},
-  'fuego':            {e:'🔥',d:'Dedos ondulando hacia arriba',c:'Salud'},
-  'peligro':          {e:'⚠️',d:'X cruzando las manos al frente',c:'Salud'},
-  'hambre':           {e:'🍽️',d:'C al pecho, mueve hacia abajo',c:'Salud'},
-  'sed':              {e:'🥤',d:'C al cuello, mueve hacia abajo',c:'Salud'},
-  'frío':             {e:'🥶',d:'Puños cerrados, agita los brazos',c:'Salud'},
-  'calor':            {e:'🥵',d:'C frente a la boca, agita',c:'Salud'},
-
-  // ══ LUGARES Y TRANSPORTE ══
-  'escuela':          {e:'🏫',d:'Aplaude suavemente dos veces',c:'Lugar'},
-  'tienda':           {e:'🏪',d:'T luego abre manos hacia afuera',c:'Lugar'},
-  'banco':            {e:'🏦',d:'B sobre la palma opuesta',c:'Lugar'},
-  'parque':           {e:'🌳',d:'P luego manos hacia arriba como árbol',c:'Lugar'},
-  'carro':            {e:'🚗',d:'Manos como volante, gira',c:'Transporte'},
-  'autobús':          {e:'🚌',d:'B, luego simula volante grande',c:'Transporte'},
-  'avión':            {e:'✈️',d:'Y extendida hacia adelante, eleva',c:'Transporte'},
-  'teléfono':         {e:'📞',d:'Y en el oído',c:'General'},
-  'celular':          {e:'📱',d:'C en la palma, mímico de pantalla',c:'General'},
-  'policía':          {e:'👮',d:'C en el pecho lado izquierdo',c:'Salud'},
+// ── WORD DICTIONARY ───────────────────────────────────────────────────────────
+const WORDS={
+  // Saludos y cortesía
+  'hola':            {d:'Mano abierta, agita de lado a lado',c:'Saludo'},
+  'adiós':           {d:'Palma afuera, agita suavemente',c:'Saludo'},
+  'buenos días':     {d:'Mano abierta sube desde la cintura',c:'Saludo'},
+  'buenas tardes':   {d:'Mano abierta, baja levemente',c:'Saludo'},
+  'buenas noches':   {d:'Manos juntas, recuesta la cabeza',c:'Saludo'},
+  'bienvenido':      {d:'Palma abierta, gesto de invitar a entrar',c:'Saludo'},
+  'bienvenidos':     {d:'Ambas palmas abiertas hacia afuera',c:'Saludo'},
+  'hasta luego':     {d:'Mano abierta, agita lentamente',c:'Saludo'},
+  'mucho gusto':     {d:'Estrecha la mano imaginaria',c:'Saludo'},
+  'gracias':         {d:'Toca la barbilla, lleva la mano adelante',c:'Cortesía'},
+  'por favor':       {d:'Palmas unidas hacia arriba, mueve suave',c:'Cortesía'},
+  'de nada':         {d:'Palma al pecho, lleva hacia adelante',c:'Cortesía'},
+  'perdón':          {d:'Puño en el pecho, círculo pequeño',c:'Cortesía'},
+  'disculpe':        {d:'Palma hacia afuera, inclina cabeza',c:'Cortesía'},
+  'lo siento':       {d:'Puño en el pecho, círculo lento',c:'Cortesía'},
+  // Respuestas
+  'sí':              {d:'Puño cerrado, mueve arriba y abajo',c:'Respuesta'},
+  'no':              {d:'Índice y medio juntos, mueve de lado',c:'Respuesta'},
+  'tal vez':         {d:'Mano plana, inclina de un lado al otro',c:'Respuesta'},
+  'bien':            {d:'Pulgar arriba',c:'Respuesta'},
+  'mal':             {d:'Pulgar abajo',c:'Respuesta'},
+  'entendido':       {d:'OK con la mano, asiente con la cabeza',c:'Respuesta'},
+  'no entiendo':     {d:'Encoge hombros, palmas hacia arriba',c:'Respuesta'},
+  'repite':          {d:'Círculo en el aire con el índice',c:'Respuesta'},
+  'espera':          {d:'Palma hacia afuera, dedos arriba',c:'Respuesta'},
+  'correcto':        {d:'Índice traza una palomita en el aire',c:'Respuesta'},
+  'incorrecto':      {d:'Índice cruza en X en el aire',c:'Respuesta'},
+  // Emociones
+  'feliz':           {d:'Palma al pecho, círculo hacia arriba',c:'Emoción'},
+  'triste':          {d:'Manos al rostro, bajan lentamente',c:'Emoción'},
+  'enojado':         {d:'Dedos curvados frente al rostro',c:'Emoción'},
+  'miedo':           {d:'Manos abiertas a los lados del rostro',c:'Emoción'},
+  'cansado':         {d:'Dedos doblados al pecho, inclina cuerpo',c:'Emoción'},
+  'amor':            {d:'Cruza los brazos sobre el pecho',c:'Emoción'},
+  'contento':        {d:'Palmas al pecho, sube con alegría',c:'Emoción'},
+  'nervioso':        {d:'Dedos entrelazados, mueve nerviosamente',c:'Emoción'},
+  'emocionado':      {d:'Manos abiertas, vibra con entusiasmo',c:'Emoción'},
+  'sorprendido':     {d:'Manos abiertas a los lados de la cara',c:'Emoción'},
+  'orgulloso':       {d:'Puño al pecho, empuja hacia afuera',c:'Emoción'},
+  // Trabajo
+  'reunión':         {d:'Ambas manos se unen al centro',c:'Trabajo'},
+  'presentación':    {d:'Manos se abren de centro hacia afuera',c:'Trabajo'},
+  'proyecto':        {d:'P sobre la palma opuesta',c:'Trabajo'},
+  'agenda':          {d:'A sobre la palma, señala puntos',c:'Trabajo'},
+  'objetivo':        {d:'Índice apunta al centro de la palma opuesta',c:'Trabajo'},
+  'urgente':         {d:'U en movimiento rápido de lado a lado',c:'Trabajo'},
+  'importante':      {d:'I al pecho con movimiento firme',c:'Trabajo'},
+  'idea':            {d:'Índice sube desde la sien hacia arriba',c:'Trabajo'},
+  'problema':        {d:'P frente al rostro con expresión seria',c:'Trabajo'},
+  'solución':        {d:'S al pecho, abre la mano hacia arriba',c:'Trabajo'},
+  'aprobado':        {d:'Palma plana choca sobre la otra mano',c:'Trabajo'},
+  'equipo':          {d:'Ambas manos se mueven juntas al centro',c:'Trabajo'},
+  'trabajo':         {d:'Puños uno sobre otro, mueve',c:'Trabajo'},
+  'comunicación':    {d:'Mano va del pecho hacia adelante',c:'Trabajo'},
+  'cambio':          {d:'Índices rotan entre sí',c:'Trabajo'},
+  'avance':          {d:'Palma sube lentamente',c:'Trabajo'},
+  'correo':          {d:'C sobre palma, simula abrir sobre',c:'Trabajo'},
+  'llamada':         {d:'Y en el oído',c:'Trabajo'},
+  'acuerdo':         {d:'Estrechón de manos',c:'Trabajo'},
+  'decisión':        {d:'Ambas manos como balanza, inclina',c:'Trabajo'},
+  'plazo':           {d:'P apunta al reloj imaginario',c:'Trabajo'},
+  'prioridad':       {d:'P sube por encima de las otras cosas',c:'Trabajo'},
+  'informe':         {d:'I sobre palma, pasa como leyendo',c:'Trabajo'},
+  'lanzar':          {d:'Puño sube rápido como cohete',c:'Trabajo'},
+  'colaborar':       {d:'Ambas manos se mueven juntas',c:'Trabajo'},
+  'delegar':         {d:'Señala hacia otro con firmeza',c:'Trabajo'},
+  'planificar':      {d:'P sobre palma, señala puntos',c:'Trabajo'},
+  'organizar':       {d:'O con ambas manos, ordena hacia la derecha',c:'Trabajo'},
+  'estrategia':      {d:'E frente a los ojos, mueve hacia adelante',c:'Trabajo'},
+  'capacitar':       {d:'C sobre palma, simula abrir libro',c:'Trabajo'},
+  // Educación
+  'aprender':        {d:'A sobre la sien, simula absorber',c:'Educación'},
+  'enseñar':         {d:'E del pecho hacia el frente',c:'Educación'},
+  'estudiar':        {d:'E sobre palma, simula leer',c:'Educación'},
+  'leer':            {d:'Índices van de izquierda a derecha sobre palma',c:'Educación'},
+  'escribir':        {d:'Simula escribir sobre la palma',c:'Educación'},
+  'tarea':           {d:'T sobre palma, simula escribir lista',c:'Educación'},
+  'examen':          {d:'E sobre palma, señala preguntas',c:'Educación'},
+  'pregunta':        {d:'Q con el índice curvado',c:'Educación'},
+  'escuela':         {d:'Aplaude suavemente dos veces',c:'Educación'},
+  'maestro':         {d:'M en la frente, señala hacia el frente',c:'Educación'},
+  'libro':           {d:'Ambas palmas abiertas como libro abierto',c:'Educación'},
+  'computadora':     {d:'C simula teclear sobre palma',c:'Educación'},
+  'investigación':   {d:'I frente a los ojos, mueve de izq a der',c:'Educación'},
+  'universidad':     {d:'U luego señala un edificio grande',c:'Educación'},
+  'diploma':         {d:'D desenrolla pergamino imaginario',c:'Educación'},
+  // Hogar
+  'casa':            {d:'Forma un triángulo con los dedos',c:'Hogar'},
+  'familia':         {d:'F con ambas manos, traza un círculo',c:'Hogar'},
+  'agua':            {d:'W con la mano, toca los labios',c:'Hogar'},
+  'comida':          {d:'Dedos juntos, lleva a la boca repetido',c:'Hogar'},
+  'comer':           {d:'Dedos juntos, lleva a la boca',c:'Hogar'},
+  'dormir':          {d:'Mano en la mejilla, inclina la cabeza',c:'Hogar'},
+  'limpiar':         {d:'L simula barrer hacia un lado',c:'Hogar'},
+  'comprar':         {d:'C frota pulgar e índice, empuja adelante',c:'Hogar'},
+  'dinero':          {d:'Frota pulgar e índice repetidamente',c:'Hogar'},
+  'mamá':            {d:'5 dedos extendidos, toca la barbilla',c:'Hogar'},
+  'papá':            {d:'5 dedos extendidos, toca la frente',c:'Hogar'},
+  'hermano':         {d:'L con ambas manos, une al frente',c:'Hogar'},
+  'hermana':         {d:'A con ambas manos, baja del mentón',c:'Hogar'},
+  'amigo':           {d:'Engancha índices alternadamente',c:'Hogar'},
+  'bebé':            {d:'Mécete con brazos cruzados',c:'Hogar'},
+  // Tiempo
+  'tiempo':          {d:'T apunta al reloj imaginario en la muñeca',c:'Tiempo'},
+  'hoy':             {d:'Índices abajo, pequeño círculo',c:'Tiempo'},
+  'mañana':          {d:'Pulgar en la mejilla, gira hacia adelante',c:'Tiempo'},
+  'ayer':            {d:'Pulgar en la mejilla, gira hacia atrás',c:'Tiempo'},
+  'ahora':           {d:'Y baja con movimiento firme',c:'Tiempo'},
+  'rápido':          {d:'L jala hacia atrás rápidamente',c:'Tiempo'},
+  // Salud
+  'ayuda':           {d:'Puño sobre palma abierta, sube urgente',c:'Salud'},
+  'doctor':          {d:'D sobre la muñeca interna',c:'Salud'},
+  'dolor':           {d:'Índices apuntando, mueve en espiral',c:'Salud'},
+  'enfermo':         {d:'Dedo medio al frente, otro al estómago',c:'Salud'},
+  'emergencia':      {d:'E en el pecho con movimiento rápido',c:'Salud'},
 };
 
-// Contar palabras
-document.getElementById('word-count').textContent = Object.keys(WORDS).length;
+document.getElementById('wcount').textContent=Object.keys(WORDS).length;
 
-// ── SETTINGS ──────────────────────────────────────────────────────────────────
-const DEF = {
-  darkTheme:true, accent:'#00e5ff', cardSize:100,
-  fontSize:16, emojiSize:3.2, showDetail:true, showCat:true,
-  anim:true, fallback:true, interim:true,
-  maxLetters:30, lang:'es-CO'
-};
-let cfg = {...DEF};
-let recognition = null, isListening = false, mode = 'palabras';
-
-function loadCfg() {
-  try { const s=localStorage.getItem('senas-cfg2'); if(s) cfg={...DEF,...JSON.parse(s)}; } catch(e){}
-  applyAll();
+function getSVG(word){
+  return HAND_SVG[word] || HAND_SVG._default;
 }
-function saveCfg() { try { localStorage.setItem('senas-cfg2', JSON.stringify(cfg)); } catch(e){} }
 
-function applyAll() {
-  document.body.classList.toggle('light', !cfg.darkTheme);
-  document.getElementById('theme-btn').textContent = cfg.darkTheme ? '🌙' : '☀️';
-  document.getElementById('toggle-theme').checked = !cfg.darkTheme;
-  document.documentElement.style.setProperty('--accent', cfg.accent);
-  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.toggle('selected', s.dataset.color===cfg.accent));
-  document.getElementById('slider-card').value=cfg.cardSize;
-  document.getElementById('val-card').textContent=cfg.cardSize+'px';
-  document.documentElement.style.setProperty('--card-size', cfg.cardSize+'px');
-  document.getElementById('slider-font').value=cfg.fontSize;
-  document.getElementById('val-font').textContent=cfg.fontSize+'px';
-  document.documentElement.style.setProperty('--font-size-base', cfg.fontSize+'px');
-  document.getElementById('slider-emoji').value=cfg.emojiSize;
-  document.getElementById('val-emoji').textContent=cfg.emojiSize;
-  document.documentElement.style.setProperty('--sign-emoji-size', cfg.emojiSize+'rem');
-  document.getElementById('toggle-detail').checked=cfg.showDetail;
-  document.getElementById('toggle-cat').checked=cfg.showCat;
-  document.getElementById('toggle-anim').checked=cfg.anim;
-  document.getElementById('toggle-fallback').checked=cfg.fallback;
-  document.getElementById('toggle-interim').checked=cfg.interim;
-  document.getElementById('slider-maxl').value=cfg.maxLetters;
-  document.getElementById('val-maxl').textContent=cfg.maxLetters;
-  document.getElementById('lang-select').value=cfg.lang;
-  if(recognition) recognition.lang=cfg.lang;
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const DEF={darkTheme:true,accent:'#7ee8fa',cardSize:130,fontSize:16,showDetail:true,showCat:true,anim:true,fallback:true,interim:true,maxLetters:30,lang:'es-CO'};
+let cfg={...DEF},recognition=null,isListening=false,mode='p';
+
+function loadCfg(){try{const s=localStorage.getItem('senas-v3');if(s)cfg={...DEF,...JSON.parse(s)};}catch(e){}applyAll();}
+function saveCfg(){try{localStorage.setItem('senas-v3',JSON.stringify(cfg));}catch(e){}}
+
+function applyAll(){
+  document.body.classList.toggle('light',!cfg.darkTheme);
+  document.getElementById('theme-btn').textContent=cfg.darkTheme?'🌙':'☀️';
+  document.getElementById('t-theme').checked=!cfg.darkTheme;
+  document.documentElement.style.setProperty('--accent2',cfg.accent);
+  document.querySelectorAll('.cs').forEach(s=>s.classList.toggle('on',s.dataset.c===cfg.accent));
+  document.getElementById('s-card').value=cfg.cardSize;
+  document.getElementById('v-card').textContent=cfg.cardSize+'px';
+  document.documentElement.style.setProperty('--card-size',cfg.cardSize+'px');
+  document.getElementById('s-font').value=cfg.fontSize;
+  document.getElementById('v-font').textContent=cfg.fontSize+'px';
+  document.documentElement.style.setProperty('--font-base',cfg.fontSize+'px');
+  document.getElementById('t-det').checked=cfg.showDetail;
+  document.getElementById('t-cat').checked=cfg.showCat;
+  document.getElementById('t-anim').checked=cfg.anim;
+  document.getElementById('t-fall').checked=cfg.fallback;
+  document.getElementById('t-int').checked=cfg.interim;
+  document.getElementById('s-maxl').value=cfg.maxLetters;
+  document.getElementById('v-maxl').textContent=cfg.maxLetters;
+  document.getElementById('s-lang').value=cfg.lang;
+  if(recognition)recognition.lang=cfg.lang;
 }
-
-function persist() {
-  cfg.showDetail=document.getElementById('toggle-detail').checked;
-  cfg.showCat=document.getElementById('toggle-cat').checked;
-  cfg.anim=document.getElementById('toggle-anim').checked;
-  cfg.fallback=document.getElementById('toggle-fallback').checked;
-  cfg.interim=document.getElementById('toggle-interim').checked;
+function save(){
+  cfg.showDetail=document.getElementById('t-det').checked;
+  cfg.showCat=document.getElementById('t-cat').checked;
+  cfg.anim=document.getElementById('t-anim').checked;
+  cfg.fallback=document.getElementById('t-fall').checked;
+  cfg.interim=document.getElementById('t-int').checked;
   saveCfg();
 }
-function resetSettings() {
-  if(!confirm('¿Restaurar todos los ajustes?')) return;
-  cfg={...DEF}; applyAll(); saveCfg();
-}
-
-function toggleTheme() { cfg.darkTheme=!cfg.darkTheme; applyAll(); saveCfg(); }
-function applyTheme()  { cfg.darkTheme=!document.getElementById('toggle-theme').checked; applyAll(); saveCfg(); }
-function setAccent(el) {
-  cfg.accent=el.dataset.color;
-  document.documentElement.style.setProperty('--accent',cfg.accent);
-  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.toggle('selected',s.dataset.color===cfg.accent));
-  saveCfg();
-}
-function setCardSize(v)  { cfg.cardSize=+v; document.documentElement.style.setProperty('--card-size',v+'px'); document.getElementById('val-card').textContent=v+'px'; saveCfg(); }
-function setFontSize(v)  { cfg.fontSize=+v; document.documentElement.style.setProperty('--font-size-base',v+'px'); document.getElementById('val-font').textContent=v+'px'; saveCfg(); }
-function setEmojiSize(v) { cfg.emojiSize=+v; document.documentElement.style.setProperty('--sign-emoji-size',v+'rem'); document.getElementById('val-emoji').textContent=+v; saveCfg(); }
-function setMaxLetters(v){ cfg.maxLetters=+v; document.getElementById('val-maxl').textContent=v; saveCfg(); }
-function setLang(v)      { cfg.lang=v; if(recognition) recognition.lang=v; saveCfg(); }
-
-function openSettings()  { document.getElementById('settings-overlay').classList.add('open'); }
-function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
-function handleOverlayClick(e) { if(e.target.id==='settings-overlay') closeSettings(); }
+function resetCfg(){if(!confirm('¿Restaurar ajustes?'))return;cfg={...DEF};applyAll();saveCfg();}
+function toggleTheme(){cfg.darkTheme=!cfg.darkTheme;applyAll();saveCfg();}
+function applyTheme(){cfg.darkTheme=!document.getElementById('t-theme').checked;applyAll();saveCfg();}
+function setAccent(el){cfg.accent=el.dataset.c;document.documentElement.style.setProperty('--accent2',cfg.accent);document.querySelectorAll('.cs').forEach(s=>s.classList.toggle('on',s.dataset.c===cfg.accent));saveCfg();}
+function setCardSize(v){cfg.cardSize=+v;document.documentElement.style.setProperty('--card-size',v+'px');document.getElementById('v-card').textContent=v+'px';saveCfg();}
+function setFontSize(v){cfg.fontSize=+v;document.documentElement.style.setProperty('--font-base',v+'px');document.getElementById('v-font').textContent=v+'px';saveCfg();}
+function setMaxL(v){cfg.maxLetters=+v;document.getElementById('v-maxl').textContent=v;saveCfg();}
+function setLang(v){cfg.lang=v;if(recognition)recognition.lang=v;saveCfg();}
+function openS(){document.getElementById('ov').classList.add('open');}
+function closeS(){document.getElementById('ov').classList.remove('open');}
+function ovClick(e){if(e.target.id==='ov')closeS();}
 
 // ── SPEECH ────────────────────────────────────────────────────────────────────
-function initSpeech() {
+function initSpeech(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ document.getElementById('no-support').style.display='block'; return; }
-  recognition=new SR();
-  recognition.continuous=true; recognition.interimResults=true; recognition.lang=cfg.lang;
+  if(!SR){document.getElementById('no-sup').style.display='block';return;}
+  recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang=cfg.lang;
   recognition.onresult=e=>{
     let interim='',final='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      const t=e.results[i][0].transcript;
-      if(e.results[i].isFinal) final+=t; else interim+=t;
-    }
+    for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=t;else interim+=t;}
     const text=(final||(cfg.interim?interim:'')).trim().toLowerCase();
-    setTranscript(text);
-    if(text) processText(text);
+    setTx(text);if(text)process(text);
   };
-  recognition.onerror=e=>{ if(e.error!=='no-speech') stopMic(); };
-  recognition.onend=()=>{ if(isListening) recognition.start(); };
+  recognition.onerror=e=>{if(e.error!=='no-speech')stopMic();};
+  recognition.onend=()=>{if(isListening)recognition.start();};
 }
-
-function toggleMic() { isListening?stopMic():startMic(); }
-function startMic() {
-  if(!recognition) return;
-  isListening=true; recognition.lang=cfg.lang; recognition.start();
-  document.getElementById('mic-btn').classList.add('listening');
-  document.getElementById('mic-icon').textContent='⏹️';
-  document.getElementById('mic-status').textContent='Escuchando...';
-  document.getElementById('status-dot').classList.add('active');
-}
-function stopMic() {
-  isListening=false; recognition?.stop();
-  document.getElementById('mic-btn').classList.remove('listening');
-  document.getElementById('mic-icon').textContent='🎙️';
-  document.getElementById('mic-status').textContent='Toca para hablar';
-  document.getElementById('status-dot').classList.remove('active');
-}
-
-function setTranscript(text) {
-  const el=document.getElementById('transcript-text');
-  el.textContent=text||'Lo que digas aparecerá aquí...';
-  el.className=text?'':'placeholder';
-}
-
-function setMode(m) {
+function toggleMic(){isListening?stopMic():startMic();}
+function startMic(){if(!recognition)return;isListening=true;recognition.lang=cfg.lang;recognition.start();document.getElementById('mic-btn').classList.add('on');document.getElementById('mic-ico').textContent='⏹️';document.getElementById('mic-st').textContent='Escuchando...';document.getElementById('dot').classList.add('on');}
+function stopMic(){isListening=false;recognition?.stop();document.getElementById('mic-btn').classList.remove('on');document.getElementById('mic-ico').textContent='🎙️';document.getElementById('mic-st').textContent='Toca para hablar';document.getElementById('dot').classList.remove('on');}
+function setTx(text){const el=document.getElementById('tx');el.textContent=text||'Lo que digas aparecerá aquí...';el.className=text?'':'ph';}
+function setMode(m){
   mode=m;
-  document.getElementById('btn-palabras').className='mode-btn'+(m==='palabras'?' active':'');
-  document.getElementById('btn-letras').className='mode-btn'+(m==='letras'?' active':'');
-  document.getElementById('signs-display').innerHTML=`<div class="empty-state"><div class="big-icon">🤲</div><p>Di algo en modo <strong>${m==='palabras'?'palabras':'dactilológico'}</strong></p></div>`;
-  document.getElementById('word-chips').innerHTML='';
-  document.getElementById('panel-subtitle').textContent='';
+  document.getElementById('btn-p').className='mode-btn'+(m==='p'?' on':'');
+  document.getElementById('btn-l').className='mode-btn'+(m==='l'?' on':'');
+  document.getElementById('grid').innerHTML='<div class="empty"><div class="ico">🤲</div><p>Di algo para ver las señas en modo <strong>'+(m==='p'?'palabras':'dactilológico')+'</strong></p></div>';
+  document.getElementById('chips').innerHTML='';
+  document.getElementById('psub').textContent='';
 }
+function process(text){if(mode==='p')showWords(text);else showLetters(text);}
 
-function processText(text) {
-  if(mode==='palabras') showWords(text); else showLetters(text);
-}
-
-// ── SHOW WORDS (prioridad absoluta sobre letras) ───────────────────────────────
-function showWords(text) {
+// ── SHOW WORDS ────────────────────────────────────────────────────────────────
+function showWords(text){
   const ws=text.toLowerCase().split(/\s+/).filter(Boolean);
-  const found=[]; const seen=new Set();
+  const found=[],seen=new Set();
+  for(let i=0;i<ws.length-2;i++){const k=ws[i]+' '+ws[i+1]+' '+ws[i+2];if(WORDS[k]&&!seen.has(k)){found.push({k,...WORDS[k]});seen.add(k);}}
+  for(let i=0;i<ws.length-1;i++){const k=ws[i]+' '+ws[i+1];if(WORDS[k]&&!seen.has(k)){found.push({k,...WORDS[k]});seen.add(k);}}
+  ws.forEach(w=>{if(WORDS[w]&&!seen.has(w)){found.push({k:w,...WORDS[w]});seen.add(w);}});
 
-  // tri-gramas
-  for(let i=0;i<ws.length-2;i++){
-    const k=ws[i]+' '+ws[i+1]+' '+ws[i+2];
-    if(WORDS[k]&&!seen.has(k)){found.push({k,...WORDS[k]});seen.add(k);}
-  }
-  // bi-gramas
-  for(let i=0;i<ws.length-1;i++){
-    const k=ws[i]+' '+ws[i+1];
-    if(WORDS[k]&&!seen.has(k)){found.push({k,...WORDS[k]});seen.add(k);}
-  }
-  // uni-gramas
-  ws.forEach(w=>{
-    if(WORDS[w]&&!seen.has(w)){found.push({k:w,...WORDS[w]});seen.add(w);}
-  });
-
-  const disp=document.getElementById('signs-display');
-  const chips=document.getElementById('word-chips');
-  const sub=document.getElementById('panel-subtitle');
-
-  // Palabras sin seña
+  const grid=document.getElementById('grid'),chips=document.getElementById('chips'),psub=document.getElementById('psub');
   const missing=ws.filter(w=>!WORDS[w]&&w.length>2);
 
-  if(found.length===0) {
-    // Sin ninguna seña encontrada → deletrear si está activado
-    if(cfg.fallback) {
-      showLettersFallback(text);
-    } else {
-      disp.innerHTML=`<div class="empty-state"><div class="big-icon">🔍</div><p>No encontré señas para estas palabras.<br>Activa la <strong>dactilología como último recurso</strong> en ajustes.</p></div>`;
-      chips.innerHTML=''; sub.textContent='';
-    }
+  if(!found.length){
+    if(cfg.fallback){showLettersFallback(text);}
+    else{grid.innerHTML='<div class="empty"><div class="ico">🔍</div><p>Sin señas para estas palabras.<br>Activa dactilología en ajustes.</p></div>';chips.innerHTML='';psub.textContent='';}
     return;
   }
 
-  disp.innerHTML=''; chips.innerHTML='';
-  sub.textContent = found.length + ' seña' + (found.length>1?'s':'') + ' encontrada' + (found.length>1?'s':'');
+  grid.innerHTML='';chips.innerHTML='';
+  psub.textContent=found.length+' seña'+(found.length>1?'s':'')+' encontrada'+(found.length>1?'s':'');
 
   found.forEach((sign,i)=>{
     const card=document.createElement('div');
     card.className='sign-card';
-    card.style.animationDelay=cfg.anim?(i*0.07)+'s':'0s';
-    if(!cfg.anim) card.style.animation='none';
+    card.style.animationDelay=cfg.anim?(i*.08)+'s':'0s';
+    if(!cfg.anim)card.style.animation='none';
+    const svg=getSVG(sign.k);
     card.innerHTML=`
-      <div class="sign-hand active"><span>${sign.e}</span></div>
-      <div class="sign-label">${sign.k}</div>
+      <div class="hand-box lit" style="color:var(--accent2)">${svg}</div>
+      <div class="sign-word-lbl">${sign.k}</div>
       ${cfg.showDetail?`<div class="sign-detail">${sign.d}</div>`:''}
-      ${cfg.showCat?`<div class="sign-cat">${sign.c}</div>`:''}
+      ${cfg.showCat?`<div class="sign-cat-lbl">${sign.c}</div>`:''}
     `;
-    disp.appendChild(card);
+    grid.appendChild(card);
   });
 
-  // Chips: verde si encontrada, naranja si falta
-  ws.forEach(w=>{
-    if(w.length<=2) return;
-    const chip=document.createElement('div');
-    chip.className='word-chip '+(WORDS[w]?'found':'missing');
-    chip.textContent=w;
-    chip.title=WORDS[w]?'✓ Seña disponible':'⚠ Sin seña — se deletreará';
-    chips.appendChild(chip);
-  });
+  ws.forEach(w=>{if(w.length<=1)return;const chip=document.createElement('div');chip.className='chip '+(WORDS[w]?'found':'miss');chip.textContent=w;chips.appendChild(chip);});
 
-  // Si hay palabras sin seña, mostrar banner y deletrear esas al final
-  if(missing.length>0 && cfg.fallback) {
+  if(missing.length&&cfg.fallback){
     const banner=document.createElement('div');
-    banner.className='fallback-banner';
-    banner.style.width='100%';
-    banner.innerHTML=`⌨️ Palabras sin seña (<strong>${missing.join(', ')}</strong>) se muestran en dactilología:`;
-    disp.appendChild(banner);
-    // Añadir tarjetas de letras para las palabras faltantes
+    banner.className='fb-banner';
+    banner.innerHTML=`⌨️ Sin seña: <strong>${missing.join(', ')}</strong> — dactilología:`;
+    grid.appendChild(banner);
     missing.forEach(w=>{
       w.toUpperCase().split('').slice(0,cfg.maxLetters).forEach((l,i)=>{
-        const card=document.createElement('div');
-        card.className='sign-card letter-card';
-        card.style.animationDelay=cfg.anim?((found.length+i)*0.04)+'s':'0s';
-        if(!cfg.anim) card.style.animation='none';
-        const em=ALP[l]||'🤚';
-        card.innerHTML=`
-          <div class="sign-hand active"><span>${em}</span></div>
-          <div class="sign-label" style="color:var(--accent3)">${l}</div>
-        `;
-        disp.appendChild(card);
+        const card=document.createElement('div');card.className='sign-card ltr';
+        card.style.animationDelay=cfg.anim?((found.length+i)*.04)+'s':'0s';
+        if(!cfg.anim)card.style.animation='none';
+        card.innerHTML=`<div class="hand-box ${l!==' '?'lit':''}" style="font-size:2.8rem;color:var(--gold)">${ALP[l]||'🤚'}</div><div class="sign-word-lbl" style="color:var(--gold)">${l===' '?'esp':l}</div>`;
+        grid.appendChild(card);
       });
     });
   }
 }
 
-// ── SHOW LETTERS (modo forzado) ────────────────────────────────────────────────
-function showLetters(text) {
-  const disp=document.getElementById('signs-display');
-  const chips=document.getElementById('word-chips');
-  disp.innerHTML=''; chips.innerHTML='';
-  const clean=text.toUpperCase().replace(/[^A-ZÁÉÍÓÚÜÑ ]/g,'');
-  const letters=clean.split('').slice(0,cfg.maxLetters);
-  if(!letters.length) return;
-  document.getElementById('panel-subtitle').textContent='Modo dactilológico';
-
-  letters.forEach((l,i)=>{
-    const card=document.createElement('div');
-    card.className='sign-card letter-card';
-    card.style.animationDelay=cfg.anim?(i*0.04)+'s':'0s';
-    if(!cfg.anim) card.style.animation='none';
-    const em=ALP[l]||'🤚';
-    card.innerHTML=`
-      <div class="sign-hand ${l!==' '?'active':''}"><span>${l===' '?'&nbsp;':em}</span></div>
-      <div class="sign-label" style="color:var(--accent3)">${l===' '?'esp':l}</div>
-    `;
-    disp.appendChild(card);
-  });
-
-  text.toLowerCase().split(/\s+/).filter(Boolean).forEach(w=>{
-    const chip=document.createElement('div');
-    chip.className='word-chip'; chip.textContent=w; chips.appendChild(chip);
-  });
-}
-
-// ── FALLBACK LETTERS (cuando no hay NINGUNA seña) ─────────────────────────────
-function showLettersFallback(text) {
-  const disp=document.getElementById('signs-display');
-  disp.innerHTML='';
-  document.getElementById('panel-subtitle').textContent='Sin señas — mostrando dactilología';
-
-  const banner=document.createElement('div');
-  banner.className='fallback-banner';
-  banner.style.width='100%';
-  banner.innerHTML='⌨️ Palabra no registrada — mostrando alfabeto dactilológico como último recurso';
-  disp.appendChild(banner);
-
+// ── SHOW LETTERS ──────────────────────────────────────────────────────────────
+function showLetters(text){
+  const grid=document.getElementById('grid'),chips=document.getElementById('chips');
+  grid.innerHTML='';chips.innerHTML='';
+  document.getElementById('psub').textContent='Modo dactilológico';
   const clean=text.toUpperCase().replace(/[^A-ZÁÉÍÓÚÜÑ ]/g,'');
   clean.split('').slice(0,cfg.maxLetters).forEach((l,i)=>{
-    const card=document.createElement('div');
-    card.className='sign-card letter-card';
-    card.style.animationDelay=cfg.anim?(i*0.04)+'s':'0s';
-    if(!cfg.anim) card.style.animation='none';
-    const em=ALP[l]||'🤚';
-    card.innerHTML=`
-      <div class="sign-hand ${l!==' '?'active':''}"><span>${l===' '?'&nbsp;':em}</span></div>
-      <div class="sign-label" style="color:var(--accent3)">${l===' '?'esp':l}</div>
-    `;
-    disp.appendChild(card);
+    const card=document.createElement('div');card.className='sign-card ltr';
+    card.style.animationDelay=cfg.anim?(i*.04)+'s':'0s';
+    if(!cfg.anim)card.style.animation='none';
+    card.innerHTML=`<div class="hand-box ${l!==' '?'lit':''}" style="font-size:2.8rem;color:var(--gold)">${l===' '?'&nbsp;':ALP[l]||'🤚'}</div><div class="sign-word-lbl" style="color:var(--gold)">${l===' '?'esp':l}</div>`;
+    grid.appendChild(card);
+  });
+  text.toLowerCase().split(/\s+/).filter(Boolean).forEach(w=>{const chip=document.createElement('div');chip.className='chip';chip.textContent=w;chips.appendChild(chip);});
+}
+
+function showLettersFallback(text){
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  document.getElementById('psub').textContent='Dactilología (último recurso)';
+  const b=document.createElement('div');b.className='fb-banner';b.innerHTML='⌨️ Palabra no registrada — mostrando dactilología como último recurso';
+  grid.appendChild(b);
+  const clean=text.toUpperCase().replace(/[^A-ZÁÉÍÓÚÜÑ ]/g,'');
+  clean.split('').slice(0,cfg.maxLetters).forEach((l,i)=>{
+    const card=document.createElement('div');card.className='sign-card ltr';
+    card.style.animationDelay=cfg.anim?(i*.04)+'s':'0s';
+    if(!cfg.anim)card.style.animation='none';
+    card.innerHTML=`<div class="hand-box ${l!==' '?'lit':''}" style="font-size:2.8rem;color:var(--gold)">${l===' '?'&nbsp;':ALP[l]||'🤚'}</div><div class="sign-word-lbl" style="color:var(--gold)">${l===' '?'esp':l}</div>`;
+    grid.appendChild(card);
   });
 }
 
-// ── BOOT ─────────────────────────────────────────────────────────────────────
 loadCfg();
 initSpeech();
 </script>
